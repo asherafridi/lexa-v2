@@ -70,7 +70,7 @@ const Page = () => {
     return (
         <div className='p-5 min-h-screen'>
             <Breadcrumb title="Launch Campaign" />
-            <div className="bg-white mt-4 rounded p-4 w-100">
+            <div className="bg-background border mt-4 rounded p-4 w-100">
                 <div className='flex justify-between items-center'>
                     <h3>Launch your AI Call Campaign in 29 Seconds.</h3>
                 </div>

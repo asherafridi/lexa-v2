@@ -1,8 +1,8 @@
 .menu a.active{
-    background: #007bff;
+    background: #06CC64;
     color: #fff;
 }
 .menu a.active:hover{
-    background: #3798ff;
+    background: #06d466;
     color: #fff;
 }

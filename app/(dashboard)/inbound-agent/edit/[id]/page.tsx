@@ -61,7 +61,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
         <div className='p-5 min-h-screen'>
             <Breadcrumb title="Edit Agent" />
-            <div className="bg-white mt-4 rounded p-4">
+            <div className="bg-background border mt-4 rounded p-4">
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(submit)} className="flex w-full flex-wrap">

@@ -21,7 +21,7 @@ import Link from "next/link"
 const page = () => {
     return (
         <div className="flex min-h-screen items-center justify-center">
-            <Card className="w-[450px] bg-secondary ">
+            <Card className="w-[450px] bg-background ">
                 <CardHeader className="">
                     <CardTitle className="text-center">Verification</CardTitle>
                     <CardDescription className="text-center">Please enter the one-time password sent to your email.</CardDescription>

@@ -37,7 +37,7 @@ const Page = () => {
 
     return (
         <div className="flex min-h-screen items-center justify-center">
-            <Card className="w-[450px] bg-secondary">
+            <Card className="w-[450px] bg-background">
                 <CardHeader>
                     <CardTitle className="text-center">Email Verification</CardTitle>
                     <CardDescription className="text-center">

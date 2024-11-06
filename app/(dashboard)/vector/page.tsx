@@ -17,7 +17,7 @@ const Page = () => {
   return (
     <div className='p-5 min-h-screen'>
         <Breadcrumb title="Company Informations" />
-        <div className="bg-white mt-4 rounded p-4">
+        <div className="bg-background border mt-4 rounded p-4">
           {vectorLoader ?  <Skeleton className='w-full h-[400px] rounded mt-4'/> : <DataTable columns={columns} data={vector}  />}
         
         </div>

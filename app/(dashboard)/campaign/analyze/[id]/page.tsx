@@ -67,7 +67,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     return (
         <div className='p-5 min-h-screen'>
             <Breadcrumb title={`Analyze - ${batches?.batch_params?.label}`} />
-            <div className="bg-white mt-4 rounded p-4">
+            <div className="bg-background border mt-4 rounded p-4">
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -137,7 +137,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
             {result == null ? '' : <div className=''>
                 {Object.entries(result.answers).map(([key, value], index) => (
-                   <div className='bg-white rounded mt-2 px-4 py-6' key={index}>
+                   <div className='bg-background border rounded mt-2 px-4 py-6' key={index}>
                     <h1>Call id : {key}</h1>
                     {value.map((ele:any,ind:any)=>(
                         <div key={ind}>

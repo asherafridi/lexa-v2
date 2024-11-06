@@ -51,7 +51,7 @@ const Filter = () => {
     }
 
     return (
-        <div className='bg-white mt-4 rounded p-4'>
+        <div className='bg-background border mt-4 rounded p-4'>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(submit)} className="w-full flex gap-2 justify-between flex-col md:flex-row">
                     <FormField

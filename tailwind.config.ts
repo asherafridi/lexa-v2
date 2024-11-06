@@ -20,18 +20,18 @@ const config = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "#E8ECF8",
-        foreground: "#333333",
+        border: "#205B57",
+        input: "#fff",
+        ring: "#fff",
+        background: "#050C3A",
+        foreground: "#ffffff",
         primary: {
-          DEFAULT: "#007bff",
+          DEFAULT: "#06CC64",
           foreground: "#fff",
         },
         secondary: {
-          DEFAULT: "#ffffff",
-          foreground: "#333333",
+          DEFAULT: "#205B57",
+          foreground: "#fff",
           hover :"#E4E9F4"
         },
         destructive: {
@@ -39,20 +39,20 @@ const config = {
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "#fff",
+          foreground: "#aaa",
         },
         accent: {
-          DEFAULT: "#fff",
-          foreground: "#333",
+          DEFAULT: "#205B57",
+          foreground: "#fff",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "#050C3A",
+          foreground: "#fff",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "#050C3A",
+          foreground: "#fff",
         },
       },
       borderRadius: {

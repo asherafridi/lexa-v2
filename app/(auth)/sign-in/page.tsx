@@ -65,9 +65,9 @@ const Page = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <Card className="w-[450px] bg-secondary ">
+      <Card className="w-[450px] bg-background ">
         <CardHeader className="">
-          <CardTitle className="text-center">Sign In</CardTitle>
+          <CardTitle className="text-center ">Sign In</CardTitle>
           <CardDescription className="text-center">Create AI calls campaigns under 1 minute.</CardDescription>
         </CardHeader>
         <CardContent className="">

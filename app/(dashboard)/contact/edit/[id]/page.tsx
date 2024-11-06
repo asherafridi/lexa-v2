@@ -54,7 +54,7 @@ const Page = async ({params} : {params:{id:string}}) => {
 
         <div className='p-5 min-h-screen'>
             <Breadcrumb title="Edit Contact" />
-            <div className="bg-white mt-4 rounded p-4">
+            <div className="bg-background border mt-4 rounded p-4">
 
                 <form className='w-full mt-5 gap-4' onSubmit={handleSubmit(submit)}>
                     <div className='w-1/3'>

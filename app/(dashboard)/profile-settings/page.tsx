@@ -18,7 +18,7 @@ const Page = () => {
             <Breadcrumb title="Profile Settings" />
             <div className=" mt-4 rounded p-4 flex justify-center">
                 <Tabs defaultValue="account" className="w-full">
-                    <TabsList className='flex justify-center gap-4 bg-white py-2'>
+                    <TabsList className='flex justify-center gap-4 bg-background border py-2'>
                         <TabsTrigger value="account" className='flex gap-4 text-lg'><UserRound />Account</TabsTrigger>
                         <TabsTrigger value="password" className='flex gap-4 text-lg'><Lock />Password</TabsTrigger>
                     </TabsList>

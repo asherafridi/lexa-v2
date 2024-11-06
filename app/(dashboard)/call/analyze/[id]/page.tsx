@@ -66,7 +66,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     return (
         <div className='p-5 min-h-screen'>
             <Breadcrumb title="Analyze Call" />
-            <div className="bg-white mt-4 rounded p-4">
+            <div className="bg-background border mt-4 rounded p-4">
                 <p><strong>Call ID:</strong> {call?.call_id}</p>
                 <p><strong>From:</strong> {call?.from}</p>
                 <p><strong>To:</strong> {call?.to}</p>
@@ -137,7 +137,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                 </Form>
             </div>
 
-            {result == null ? '' : <div className='bg-white mt-4 rounded p-4'>
+            {result == null ? '' : <div className='bg-background border mt-4 rounded p-4'>
                 {result?.questions.map((element, index) => (
                     <div key={index}>
                         <b>Question No.{index+1} : </b>{element[0]}<br />

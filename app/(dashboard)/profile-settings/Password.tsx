@@ -31,7 +31,7 @@ const Account = () => {
     };
 
     return (
-        <div className='bg-white rounded-md p-4'>
+        <div className='bg-background border rounded-md p-4'>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(submit)} className="mt-4 flex w-full flex-wrap">
                     <FormField

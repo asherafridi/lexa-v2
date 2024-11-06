@@ -23,7 +23,7 @@ const Page = () => {
 
   return (
     <div className='p-5 min-h-screen'>
-      <div className='border-b-2 border-slate-300 flex justify-between w-full'>
+      <div className='border-b-2  flex justify-between w-full'>
 
         <div className=' text-3xl  pb-8 mr-2'>Agents</div>
         <div className='gap-2 flex-col md:flex-row  items-end'>
@@ -32,7 +32,7 @@ const Page = () => {
       </div>
       <div className=" mt-4 rounded p-4 flex gap-2 flex-wrap">
         {data?.map((element, index) => (
-          <div key={index} className='bg-white rounded w-full md:w-1/2 lg:w-1/4 p-3'>
+          <div key={index} className='bg-background border rounded w-full md:w-1/2 lg:w-1/4 p-3'>
             <div className='flex justify-between'>
               <div className='flex items-center gap-4'>
                 <Avatar>

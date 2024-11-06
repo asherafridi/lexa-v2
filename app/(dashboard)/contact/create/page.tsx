@@ -22,7 +22,7 @@ const Page = () => {
   return (
     <div className='p-5 min-h-screen'>
         <Breadcrumb title="Add Contact" />
-        <div className="bg-white mt-4 rounded p-4">
+        <div className="bg-background border mt-4 rounded p-4">
             <div className='flex justify-between items-center'>
                 <h3>Add Contact</h3>
                 <Button variant="outline" onClick={toggleBox} className="">

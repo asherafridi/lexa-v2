@@ -58,7 +58,7 @@ const Page = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <Card className="w-[450px] bg-secondary">
+      <Card className="w-[450px] bg-background">
         <CardHeader className="">
           <CardTitle className="text-center">Sign Up</CardTitle>
           <h3></h3>

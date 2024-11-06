@@ -68,7 +68,7 @@ const Page = async ({params} : {params:{id:string}}) => {
 
         <div className='p-5 min-h-screen'>
             <Breadcrumb title="Edit Company Information" />
-            <div className="bg-white mt-4 rounded p-4">
+            <div className="bg-background border mt-4 rounded p-4">
                 <div className='flex justify-between items-center'>
                     <h3>Vector Store</h3>
                 </div>

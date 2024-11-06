@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import "@/styles/globals.css"
-import { Montserrat as FontSans } from "next/font/google"
+import { Poppins as FontSans } from "next/font/google"
 import { Toaster } from "react-hot-toast";
 
 import { cn } from "@/lib/utils"
@@ -13,7 +13,8 @@ import Provider from "@/components/Provider";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-})
+  weight : ["300","400","500"]
+});
  
 
 const inter = Montserrat({ subsets: ["latin"] });
@@ -30,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className + ' text-foreground'}>
         
       <Toaster position="top-right" />
       <Provider>
