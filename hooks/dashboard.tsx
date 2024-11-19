@@ -1,11 +1,13 @@
 import React,{useState,useEffect} from 'react'
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 interface Insight {
     insights : any;
 }
 
 const useFetchInsightsHook = () => {
+  const router = useRouter();
     const [data, setData] = useState<Insight>();
     const [loading, setLoading] = useState(true);
   
@@ -18,6 +20,7 @@ const useFetchInsightsHook = () => {
           
         } catch (error) {
           setLoading(false);
+          router.push('/verify')
           console.log(error);
         }
       };

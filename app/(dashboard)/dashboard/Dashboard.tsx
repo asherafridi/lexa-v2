@@ -55,33 +55,28 @@ import { useSession } from "next-auth/react"
 ChartJS.register(BarElement, CategoryScale, LinearScale, PieController, ArcElement, Tooltip, Legend);
 
 export default function Dashboard() {
+  
 
+  const { data, loading } = useFetchInsightsHook();
+
+  if (loading) {
+    return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
+  }
   const session = useSession();
 
   const router = useRouter();
 
   console.log(session.data?.user.key_token);
 
-  if (!session.data?.user.key_token) {
+  if (!session.data?.user.key_token ) {
     router.push('/verify');
   }
 
 
-  const { data, loading } = useFetchInsightsHook();
-
-  if (loading) {
-    return <Skeleton className='w-full h-[400px] rounded mt-4' />;
-  }
-
-
-  if (!data || Object.keys(data).length === 0) {
-    return <div>No data available. Please try again later.</div>;
-  }
-
 
   // 1. Bar Chart for Call Duration Distribution
   const barChartData = {
-    labels: data ? Object.keys(data?.insights.callDurationDistribution) : '',
+    labels: Object.keys(data?.insights.callDurationDistribution),
     datasets: [
       {
         label: 'Call Duration (minutes)',
@@ -223,7 +218,7 @@ export default function Dashboard() {
           </Card>
 
         </div>
-
+        
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-xl font-medium">Call Duration Distribution</CardTitle>
