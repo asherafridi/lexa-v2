@@ -81,7 +81,7 @@ export default function Dashboard() {
 
   // 1. Bar Chart for Call Duration Distribution
   const barChartData = {
-    labels: data ? Object.keys(data?.insights.callDurationDistribution) : '',
+    labels:  Object.keys(data?.insights.callDurationDistribution),
     datasets: [
       {
         label: 'Call Duration (minutes)',
