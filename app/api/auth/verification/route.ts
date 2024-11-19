@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     if (user.verificationToken) {
       try {
         const userLink = verifyToken(user.verificationToken); // Verifies token
-        if (timeDifference(userLink.time) < 1) {
+        if (timeDifference(userLink.time) < 30) {
           return NextResponse.json({ msg: 'Token already sent to the email.' }, { status: 500 });
         }
       } catch (e:any) {
