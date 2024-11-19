@@ -34,6 +34,9 @@ const Page = () => {
   const router = useRouter();
   const session = useSession();
 
+  if (session.status == 'authenticated' && session.data.user.key_token ==null) {
+    router.push('/verify');
+  }
   if (session.status == 'authenticated') {
     router.push('/dashboard');
   }
