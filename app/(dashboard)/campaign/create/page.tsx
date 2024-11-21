@@ -47,18 +47,16 @@ const Page = () => {
             a:rowArray
         }
         console.log(data);
-        const response = await axios.post('/api/campaign/create',data);
-        if (response.data) {
-            console.log(response.data.msg);
-            toast.success('Data is Coming'); // Display success message
+        const response = await axios.post('/api/campaign/create',data).then((res)=>{
+            console.log(res.data.msg);
+            toast.success('Campaign Launched'); // Display success message
             setButtonLoading(false); // Reset button loading state
             form.reset(); // Reset the form
-        } else {
-            // The server responded with an error or unexpected data
-            console.error('Unexpected response:', response.data);
+        }).catch(e=>{
+            console.error('Unexpected response:', e);
             toast.error('Unexpected response from server'); // Display error message
-            setButtonLoading(false); // Reset button loading state
-        }
+            setButtonLoading(false); 
+        })
     }
 
 
