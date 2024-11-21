@@ -49,7 +49,7 @@ import { Bar, Pie } from "react-chartjs-2"
 
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, PieController, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Skeleton } from "@/components/ui/skeleton"
-import { useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, PieController, ArcElement, Tooltip, Legend);
@@ -60,11 +60,16 @@ export default function Dashboard() {
 
   const router = useRouter();
 
-  console.log(session.data?.user.key_token);
-
-  if (!session.data?.user.key_token) {
-    router.push('/verify');
-  }
+  useEffect(()=>{
+    axios.get('/api/auth/status').then(response => {
+      if (response.data.result === false) {
+        console.log(response.data.result);
+        router.push('/verify');
+      }
+  
+    });
+  },[])
+  
 
 
   const { data, loading } = useFetchInsightsHook();
@@ -75,6 +80,9 @@ export default function Dashboard() {
 
 
   if (!data || Object.keys(data).length === 0) {
+    
+    
+
     return <div>No data available. Please try again later.</div>;
   }
 
