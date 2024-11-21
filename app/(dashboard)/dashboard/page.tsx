@@ -62,10 +62,12 @@ export default function Dashboard() {
 
   useEffect(()=>{
     axios.get('/api/auth/status').then(response => {
-      if (response.data.result === false) {
-        console.log(response.data.result);
-        router.push('/verify');
-      }
+      console.log(response);
+      // if (response.data.result === true) {
+      //   console.log(response.data.result);
+      //   router.push('/sign-in');
+      // }
+      
   
     });
   },[])

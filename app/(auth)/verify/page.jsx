@@ -12,9 +12,32 @@ import {
 import { CircleDashed, Plane, PlaneTakeoff, Send } from "lucide-react"
 import toast from "react-hot-toast"
 import axios from "axios"
+import { useEffect } from "react"
+import { signOut, useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 const Page = () => {
     const [load, setLoad] = useState(false);
+
+    const session = useSession();
+    const router = useRouter();
+
+    if(session.status === "unauthenticated"){
+        
+        router.push('/sign-in');
+    }
+    
+  useEffect(()=>{
+    axios.get('/api/auth/status').then(response => {
+        console.log(response);
+      if (response.data.result === true) {
+        signOut();
+        router.push('/sign-in');
+      }
+    }).catch(e=>{
+        console.log(e);
+    });
+  },[])
 
     const sendEmail = ()=>{
         axios.post('/api/auth/verification')
