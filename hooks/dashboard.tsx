@@ -20,7 +20,6 @@ const useFetchInsightsHook = () => {
           
         } catch (error) {
           setLoading(false);
-          router.push('/verify')
           console.log(error);
         }
       };

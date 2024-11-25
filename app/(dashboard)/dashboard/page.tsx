@@ -56,25 +56,17 @@ ChartJS.register(BarElement, CategoryScale, LinearScale, PieController, ArcEleme
 
 export default function Dashboard() {
 
-  const session = useSession();
-
-  const router = useRouter();
-
-  useEffect(()=>{
-    axios.get('/api/auth/status').then(response => {
-      console.log(response);
-      // if (response.data.result === true) {
-      //   console.log(response.data.result);
-      //   router.push('/sign-in');
-      // }
-      
-  
-    });
-  },[])
-  
-
-
+  const { data: sessionData } = useSession(); // Assuming session returns an object with a data property
   const { data, loading } = useFetchInsightsHook();
+
+
+  if (sessionData?.user?.key_token == null) {
+    console.log('ashir');
+    return <Card className="p-4">Key token is missing</Card>;
+  }
+
+
+
 
   if (loading) {
     return <Skeleton className='w-full h-[400px] rounded mt-4' />;
@@ -82,16 +74,14 @@ export default function Dashboard() {
 
 
   if (!data || Object.keys(data).length === 0) {
-    
-    
 
-    return <div>No data available. Please try again later.</div>;
+    return <Card className="p-4">No data available. Please try again later.</Card>;
   }
 
 
   // 1. Bar Chart for Call Duration Distribution
   const barChartData = {
-    labels:  Object.keys(data?.insights.callDurationDistribution),
+    labels: Object.keys(data?.insights.callDurationDistribution),
     datasets: [
       {
         label: 'Call Duration (minutes)',

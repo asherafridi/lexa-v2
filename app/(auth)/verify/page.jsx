@@ -23,13 +23,11 @@ const Page = () => {
     const router = useRouter();
 
     if(session.status === "unauthenticated"){
-        
         router.push('/sign-in');
     }
     
   useEffect(()=>{
     axios.get('/api/auth/status').then(response => {
-        console.log(response);
       if (response.data.result === true) {
         signOut();
         router.push('/sign-in');
