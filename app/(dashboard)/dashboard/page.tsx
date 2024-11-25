@@ -75,7 +75,22 @@ export default function Dashboard() {
 
   if (!data || Object.keys(data).length === 0) {
 
-    return <Card className="p-4">No data available. Please try again later.</Card>;
+    return (
+    <>
+    {sessionData?.user?.key_token ? (
+  <Card className="my-4 p-4">
+    Your account is not yet verified. Please click the link below to complete the verification process.  
+    <a 
+      href="/verify" 
+      className="text-blue-500 underline ml-2"
+    >
+      Verify Now
+    </a>. 
+    If your account is already verified, kindly log out and sign in again.
+  </Card>
+) : <Card className="p-4">No data available. Please try again later.</Card>}
+    
+    </>);
   }
 
 

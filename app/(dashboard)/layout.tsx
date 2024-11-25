@@ -38,7 +38,7 @@ export default function RootLayout({
                 <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
                 <div className="wrapper w-full pl-0 lg:pl-[300px]">
                     <Navbar  sidebar={sidebar} setSidebar={setSidebar} />
-                    <div className="p-5">
+                    <div className="p-5 min-h-screen">
                         {children}
                     </div>
                     <Footer />
