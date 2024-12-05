@@ -37,7 +37,7 @@ const Page = () => {
     const { vector, vectorLoader } = useVectorFetch();
     const { tools, toolsLoader } = useToolsFetch();
 
-    
+
     const form = useForm();
     const [loading, setLoading] = useState(false);
 
@@ -59,7 +59,7 @@ const Page = () => {
 
 
     if (numberLoader || voiceLoader) {
-        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
+        return <Skeleton className='w-full h-[400px] rounded mt-4' />;
     }
 
     return (
@@ -233,14 +233,32 @@ const Page = () => {
                                                         </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
-                                                        <SelectItem value='ENG'>English</SelectItem>
-                                                        <SelectItem value='ESP'>Spanish</SelectItem>
-                                                        <SelectItem value='FRE'>French</SelectItem>
-                                                        <SelectItem value='POL'>Polish</SelectItem>
-                                                        <SelectItem value='GER'>German</SelectItem>
-                                                        <SelectItem value='ITA'>Italian</SelectItem>
-                                                        <SelectItem value='PBR'>Brazilian Portuguese</SelectItem>
-                                                        <SelectItem value='POR'>Portuguese</SelectItem>
+                                                        <SelectItem value="en-us">English</SelectItem>
+                                                        <SelectItem value="zh">Chinese</SelectItem>
+                                                        <SelectItem value="es">Spanish</SelectItem>
+                                                        <SelectItem value="fr">French</SelectItem>
+                                                        <SelectItem value="de">German</SelectItem>
+                                                        <SelectItem value="el">Greek</SelectItem>
+                                                        <SelectItem value="hi">Hindi</SelectItem>
+                                                        <SelectItem value="ja">Japanese</SelectItem>
+                                                        <SelectItem value="ko">Korean</SelectItem>
+                                                        <SelectItem value="pt">Portuguese</SelectItem>
+                                                        <SelectItem value="it">Italian</SelectItem>
+                                                        <SelectItem value="nl">Dutch</SelectItem>
+                                                        <SelectItem value="pl">Polish</SelectItem>
+                                                        <SelectItem value="ru">Russian</SelectItem>
+                                                        <SelectItem value="sv">Swedish</SelectItem>
+                                                        <SelectItem value="da">Danish</SelectItem>
+                                                        <SelectItem value="fi">Finnish</SelectItem>
+                                                        <SelectItem value="id">Indonesian</SelectItem>
+                                                        <SelectItem value="ms">Malay</SelectItem>
+                                                        <SelectItem value="tr">Turkish</SelectItem>
+                                                        <SelectItem value="uk">Ukrainian</SelectItem>
+                                                        <SelectItem value="bg">Bulgarian</SelectItem>
+                                                        <SelectItem value="cs">Czech</SelectItem>
+                                                        <SelectItem value="ro">Romanian</SelectItem>
+                                                        <SelectItem value="sk">Slovak</SelectItem>
+
                                                     </SelectContent>
                                                 </Select>
                                                 <FormMessage />
@@ -272,52 +290,52 @@ const Page = () => {
                                         )}
                                     />
 
-                                    
-<FormField
-                            control={form.control}
-                            name="information"
-                            render={({ field }) => (
-                                <FormItem className='w-full md:w-full lg:w-full p-2'>
-                                    <FormLabel>Company Informations</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Information" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {vector.map((element, index) => (
-                                                <SelectItem key={index} value={element?.vector_id}>{element?.name} - {element?.description}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />  
 
-                        <FormField
-                            control={form.control}
-                            name="tools"
-                            render={({ field }) => (
-                                <FormItem className='w-full md:w-full lg:w-full p-2'>
-                                    <FormLabel>Tools</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Tools" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {tools.map((element, index) => (
-                                                <SelectItem key={index} value={element?.tool_id}>{element?.tool?.name}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                                    <FormField
+                                        control={form.control}
+                                        name="information"
+                                        render={({ field }) => (
+                                            <FormItem className='w-full md:w-full lg:w-full p-2'>
+                                                <FormLabel>Company Informations</FormLabel>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <FormControl>
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Information" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        {vector.map((element, index) => (
+                                                            <SelectItem key={index} value={element?.vector_id}>{element?.name} - {element?.description}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
+                                    <FormField
+                                        control={form.control}
+                                        name="tools"
+                                        render={({ field }) => (
+                                            <FormItem className='w-full md:w-full lg:w-full p-2'>
+                                                <FormLabel>Tools</FormLabel>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <FormControl>
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Tools" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        {tools.map((element, index) => (
+                                                            <SelectItem key={index} value={element?.tool_id}>{element?.tool?.name}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
 
                                 </AccordionContent>
                             </AccordionItem>
