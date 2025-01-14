@@ -30,7 +30,7 @@ const UserAccountMenu = () => {
 
     return (
         <div className='flex items-center gap-5'>
-            <h3 className='font-medium border p-2 px-4 rounded-lg text-sm md:text-xl'>$ {balance}</h3>
+            <h3 className='font-medium border p-2 px-4 rounded-lg text-sm md:text-xl'>$ {Math.round(balance*100) /100}</h3>
             <DropdownMenu>
                 <DropdownMenuTrigger>
                     <Avatar>

@@ -1,8 +1,19 @@
 .menu a.active{
-    background: #06CC64;
-    color: #fff;
+    background: rgba(99,91,255,0.2);
+    border: 1px solid #635BFF;
+    color: #635BFF;
+    font-weight: 500;
 }
 .menu a.active:hover{
-    background: #06d466;
-    color: #fff;
+    
+    background: rgba(99,91,255,0.2);
+    border: 1px solid #635BFF;
+    color: #635BFF;
+    font-weight: 500;
+}
+.main {
+    background: #F3F4F6;
+}
+.sidebar{
+    min-height: calc(100vh - 15px);
 }

@@ -32,8 +32,34 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className + ' text-foreground'}>
-        
-      <Toaster position="top-right" />
+      <Toaster position="top-right" toastOptions={{
+          success:{
+            style:{
+              backgroundColor:'#fff',
+              border:'1px solid gray',
+              borderRadius:'5px'
+            },
+            icon: undefined,
+            iconTheme:{
+              primary:'#444',
+              secondary:'#fff'
+            }
+          },
+          error:{
+            style:{
+              backgroundColor:'#fff',
+              border:'1px solid gray',
+              borderRadius:'5px',
+              height:'40px',
+              fontSize:'12px'
+            },
+            icon: undefined,
+            iconTheme:{
+              primary:'#444',
+              secondary:'#fff'
+            }
+          }
+        }} />
       <Provider>
 
       {children}

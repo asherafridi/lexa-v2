@@ -9,31 +9,44 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("POSTGRESS_URI")
+  provider  = "postgresql"
+  url       = env("POSTGRESS_URI")
   directUrl = env("POSTGRESS_DIRECT_URI")
-  }
-
+}
 
 model User {
-  id                 Int       @id @default(autoincrement())
-  email              String    @unique
-  name               String?
-  password           String
-  subaccount_id      String?
-  subaccount_key     String?
-  verificationToken  String?
-  status             Boolean   @default(false)
-  contacts           Contact[] // Define one-to-many relationship
-  agents             Agent[]   // Define one-to-many relationship
+  id                Int            @id @default(autoincrement())
+  email             String         @unique
+  name              String?
+  password          String
+  subaccount_id     String?
+  subaccount_key    String?
+  verificationToken String?
+  apiKey            String?
+  knowledgeBaseId   String?
+  userId            String?
+  status            Boolean        @default(false)
+  contacts          Contact[] // Define one-to-many relationship
+  agents            Agent[] // Define one-to-many relationship
+  groups            ContactGroup[] // Define one-to-many relationship
+}
+
+model ContactGroup {
+  id       Int       @id @default(autoincrement())
+  name     String
+  user     User      @relation(fields: [userId], references: [id]) // Establish relation
+  userId   Int
+  contacts Contact[]
 }
 
 model Contact {
-  id     Int     @id @default(autoincrement())
-  name   String?
-  number String
-  user   User    @relation(fields: [userId], references: [id]) // Establish relation
-  userId Int
+  id           Int          @id @default(autoincrement())
+  name         String?
+  number       String
+  user         User         @relation(fields: [userId], references: [id]) // Establish relation
+  userId       Int
+  contactGroup ContactGroup @relation(fields: [groupId], references: [id], onDelete: Cascade) // Establish relation
+  groupId      Int          @default(1)
 }
 
 model Agent {
@@ -49,7 +62,7 @@ model Agent {
   transferNumber  String?
   language        String? @default("ENG")
   model           String? @default("enhanced")
-  user            User    @relation(fields: [userId], references: [id]) // Establish relation
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade) // Establish relation
   userId          Int
   tools           String?
 }

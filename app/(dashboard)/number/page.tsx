@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useNumberFetch } from '@/hooks/numberHook';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/components/ui/card';
 
 
 const Page = () => {
@@ -17,13 +18,10 @@ const Page = () => {
 
   
   return (
-    <div className='p-5 min-h-screen'>
-      <Breadcrumb title='Agent Number' />
-        <div className="bg-background border mt-4 rounded p-4">
+        <Card className="p-4 pt-0 mt-5">
           {numberLoader ?  <Skeleton className='w-full h-[400px] rounded mt-4'/> : <DataTable columns={columns} data={number}  />}
         
-        </div>
-    </div>
+        </Card>
   )
 }
 

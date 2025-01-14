@@ -49,23 +49,48 @@ import { Bar, Pie } from "react-chartjs-2"
 
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, PieController, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Skeleton } from "@/components/ui/skeleton"
+import { signOut, useSession } from "next-auth/react"
+
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, PieController, ArcElement, Tooltip, Legend);
 
 export default function Dashboard() {
-  const router = useRouter();
-  useEffect(() => {
-    axios.get('/api/auth/status').then(response => {
-      if (response.data.result === false) {
-        router.push('/verify');
-      }
-    });
-  }, []);
 
+  const { data: sessionData } = useSession(); // Assuming session returns an object with a data property
   const { data, loading } = useFetchInsightsHook();
 
+
+  if (sessionData?.user?.key_token == null) {
+    console.log('ashir');
+    return <Card className="p-4">Key token is missing</Card>;
+  }
+
+
+
+
   if (loading) {
-    return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
+    return <Skeleton className='w-full h-[400px] rounded mt-4' />;
+  }
+
+
+  if (!data || Object.keys(data).length === 0) {
+
+    return (
+    <>
+    {!sessionData?.user?.key_token ? (
+  <Card className="my-4 p-4">
+    Your account is not yet verified. Please click the link below to complete the verification process.  
+    <a 
+      href="/verify" 
+      className="text-blue-500 underline ml-2"
+    >
+      Verify Now
+    </a>. 
+    If your account is already verified, kindly log out and sign in again.
+  </Card>
+) : <Card className="p-4">No data available. Please try again later.</Card>}
+    
+    </>);
   }
 
 
@@ -213,7 +238,7 @@ export default function Dashboard() {
           </Card>
 
         </div>
-        
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-xl font-medium">Call Duration Distribution</CardTitle>

@@ -27,17 +27,16 @@ export async function GET(req: NextRequest) {
         const options = {
             method: 'GET',
             headers: {
-                authorization: session.user.key_token,
+                authorization: 'sk-ix1uv15q05edyjxb2oqdporz1okqchzq5zvjvi9271f2cixopa3d71ulo0ppky3969',
             },
-            params,
         };
 
         const response = await axios.get('https://api.bland.ai/v1/calls', options);
-
+        console.log(response?.data?.message);
         return NextResponse.json({ calls: response.data?.calls }, { status: 200 });
     } catch (error:any) {
-        console.error('Error fetching calls:', error);
-        const errorMessage = error.response?.data?.message || 'Data Not Found';
-        return NextResponse.json({ error: errorMessage }, { status: 500 });
+        // console.error('Error fetching calls:', error);
+        // const errorMessage = error.response?.data?.message || 'Data Not Found';
+        return NextResponse.json({ error: 'as' }, { status: 500 });
     }
 }
