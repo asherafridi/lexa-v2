@@ -77,11 +77,7 @@ export default function Dashboard() {
 
     return (
     <>
-<<<<<<< HEAD
     {!sessionData?.user?.key_token ? (
-=======
-    {sessionData?.user?.key_token ? (
->>>>>>> 538b0116a53f757721ebc1c09cfadc7d9637b061
   <Card className="my-4 p-4">
     Your account is not yet verified. Please click the link below to complete the verification process.  
     <a 
