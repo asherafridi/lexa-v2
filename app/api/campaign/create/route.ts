@@ -49,9 +49,9 @@ export async function POST(req: NextRequest) {
                 call_data: contacts,
                 label: `${name}`,
                 test_mode: true,
-                from : `${agent?.numberId}`,
-                record : true,
-                tools : tools
+                // from : `${agent?.numberId}`,
+                // record : true,
+                // tools : tools
             }
         };
 
@@ -61,6 +61,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ msg: 'Campaign Launched...' }, { status: 200 });
 
     } catch (e) {
+        console.log(e);
         return NextResponse.json({ error: e }, { status: 500 });
     }
 }
