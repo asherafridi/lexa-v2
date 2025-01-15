@@ -77,7 +77,7 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any; setSidebar: any }) => 
           }`}
       >
         <div className='hidden lg:block'>
-           <h1 className='text-2xl font-semibold '>Lexa Talk</h1>
+           <h1 className='text-2xl font-semibold '>LexaTalk</h1>
            <p>AI Phone Caller Maker</p>
          </div>
         <div className="mt-16">
