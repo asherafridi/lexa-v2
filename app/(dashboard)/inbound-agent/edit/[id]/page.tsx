@@ -60,7 +60,6 @@ const Page = ({ params }: { params: { id: string } }) => {
     return (
 
         <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Edit Agent" />
             <div className="bg-background border mt-4 rounded p-4">
 
                 <Form {...form}>

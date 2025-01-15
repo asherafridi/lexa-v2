@@ -21,7 +21,6 @@ const Page = ({ params }: { params: { id: string } }) => {
 
 
         <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Call Detail" />
 
             <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 mt-4">
                 <Card x-chunk="dashboard-01-chunk-0">

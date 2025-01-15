@@ -24,7 +24,6 @@ const Page = ({ params }: { params: { id: string } }) => {
 
     return (
         <div className='p-5 min-h-screen'>
-            <Breadcrumb title={`${batches?.batch_params.label} - Campaign Detail`} />
 
             <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 mt-4">
                 <Card x-chunk="dashboard-01-chunk-0">

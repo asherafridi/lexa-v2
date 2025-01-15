@@ -18,7 +18,6 @@ const Page = async ({params} : {params:{id:string}}) => {
     return (
 
         <div className='p-5 min-h-screen'>
-            <Breadcrumb title="View Vector Store" />
             <div className="bg-background border mt-4 rounded p-4">
                 <h2><b>Vector Id :</b> {vector?.vector_id}</h2>
                 <h2><b>Name :</b> {vector?.name}</h2>

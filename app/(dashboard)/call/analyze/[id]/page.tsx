@@ -65,7 +65,6 @@ const Page = ({ params }: { params: { id: string } }) => {
 
     return (
         <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Analyze Call" />
             <div className="bg-background border mt-4 rounded p-4">
                 <p><strong>Call ID:</strong> {call?.call_id}</p>
                 <p><strong>From:</strong> {call?.from}</p>

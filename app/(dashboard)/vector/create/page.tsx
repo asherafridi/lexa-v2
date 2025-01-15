@@ -45,9 +45,9 @@ const Page = () => {
 
             if (file.type === 'application/pdf') {
 
-                // pdfToText(file)
-                //     .then(text => form.setValue('text', text))
-                //     .catch(error => console.error("Failed to extract text from pdf"))
+                pdfToText(file)
+                    .then(text => form.setValue('text', text))
+                    .catch(error => console.error("Failed to extract text from pdf"));
 
             } else {
                 toast.error('Unsupported file type. Please upload a text PDF');
@@ -60,7 +60,6 @@ const Page = () => {
 
     return (
         <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Add Company Information" />
             <div className="bg-background border mt-4 rounded p-4">
                 <div className='flex justify-between items-center'>
                     <h3>Vector Store</h3>

@@ -59,7 +59,6 @@ const Page = () => {
 
     return (
         <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Purchase New Outbound Number" />
             <div className="bg-background border mt-4 rounded p-4">
                 <div className='flex justify-between items-center'>
                     <h3>Purchase and configure a new outbound phone number. ($15/mo. subscription using your stored payment method).</h3>
