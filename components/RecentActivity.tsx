@@ -105,7 +105,7 @@ const RecentActivity: React.FC = () => {
       <Dialog open={isDialogOpen} onOpenChange={handleDialogClose}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Call Summary</DialogTitle>
+            <DialogTitle>Call Activity</DialogTitle>
             <DialogDescription>Details for the selected call.</DialogDescription>
           </DialogHeader>
           {selectedCall && (
@@ -117,7 +117,7 @@ const RecentActivity: React.FC = () => {
                 <strong>Date:</strong> {formatDate(selectedCall.created_at)}
               </p>
               <p>
-                <strong>Summary:</strong> {selectedCall.summary || "No summary available"}
+                <strong>Activity:</strong> {selectedCall.summary || "No summary available"}
               </p>
             </div>
           )}

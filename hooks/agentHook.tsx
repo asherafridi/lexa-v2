@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { StringValidation } from "zod";
@@ -81,30 +82,41 @@ const useAgentDelete = async (id: string): Promise<void> => {
     voiceLoader: boolean;
   }
 
-  const useFetchVoice=  () : UseFetchVoiceResult=>{
-    const [voice,setVoice] =useState<Voice[]>([]);
-    const [voiceLoader,setVoiceLoader] = useState(true);
-
-    useEffect(()=>{
-      const options = {
-        method: 'GET',
-        headers: {
-          authorization: 'sk-ix1uv15q05edyjxb2oqdporz1okqchzq5zvjvi9271f2cixopa3d71ulo0ppky3969'
+  const useFetchVoice = (): UseFetchVoiceResult => {
+    const [voice, setVoice] = useState<Voice[]>([]);
+    const [voiceLoader, setVoiceLoader] = useState<boolean>(true);
+  
+    const session = useSession();
+  
+    useEffect(() => {
+      const fetchVoices = async () => {
+        try {
+          const options = {
+            headers: {
+              authorization: session.data?.user.key_token || "", // Default to an empty string if key_token is undefined
+            },
+          };
+  
+          const response = await axios.get("https://api.bland.ai/v1/voices", options);
+          setVoice(response.data.voices);
+        } catch (error) {
+          console.error("Error fetching voices:", error);
+        } finally {
+          setVoiceLoader(false);
         }
       };
-    
-    axios.get('https://api.bland.ai/v1/voices', options)
-      .then(response => {
-        setVoice(response.data.voices);
+  
+      if (session.data?.user.key_token) {
+        fetchVoices();
+      } else {
+        console.warn("No key token available for authorization");
         setVoiceLoader(false);
-      })
-      .catch(error => {
-        console.error(error);
-        setVoiceLoader(false);
-      });
-    },[]);
-    return {voice,voiceLoader};
-  }
+      }
+    }, [session.data?.user.key_token]);
+  
+    return { voice, voiceLoader };
+  };
+  
 
   interface Number {
     id : string;
