@@ -27,7 +27,7 @@ const Page = () => {
 
   return (
     <div className='p-5 min-h-screen'>
-      <Breadcrumb title="Calls" />
+      <Breadcrumb  />
       <Filter />
         {callLoader ? (
           <Skeleton className='w-full h-[400px] rounded mt-4'/>

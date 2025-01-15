@@ -154,7 +154,7 @@ export default function Dashboard() {
 
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-          <Card x-chunk="dashboard-01-chunk-0">
+          <Card x-chunk="dashboard-01-chunk-0 p-2" className="p-4">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 Total Calls
@@ -169,7 +169,7 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card x-chunk="dashboard-01-chunk-1">
+          <Card x-chunk="dashboard-01-chunk-1" className="p-4">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 Inbound Calls
@@ -184,7 +184,7 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card x-chunk="dashboard-01-chunk-2">
+          <Card x-chunk="dashboard-01-chunk-2" className="p-4">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Completed Calls</CardTitle>
               <CheckCircle className="h-4 w-4 text-muted-foreground" />
@@ -197,7 +197,7 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card x-chunk="dashboard-01-chunk-3">
+          <Card x-chunk="dashboard-01-chunk-3" className="p-4">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Cost</CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
@@ -215,7 +215,7 @@ export default function Dashboard() {
 
         <div className="flex gap-2 flex-col lg:flex-row">
           {/* Pie Chart for Successful and Unsuccessful Calls */}
-          <Card className="w-full lg:w-1/2 flex flex-col items-center">
+          <Card className="w-full lg:w-1/2 flex flex-col items-center pt-4">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-xl font-medium">Call Success Rate</CardTitle>
             </CardHeader>
@@ -227,7 +227,7 @@ export default function Dashboard() {
 
           {/* Pie Chart for Calls Received by Human vs. Others */}
 
-          <Card className="w-full lg:w-1/2 flex flex-col items-center">
+          <Card className="w-full lg:w-1/2 flex flex-col items-center  pt-4">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-xl font-medium">Calls Received by Human</CardTitle>
             </CardHeader>
@@ -239,7 +239,7 @@ export default function Dashboard() {
 
         </div>
 
-        <Card>
+        <Card className="p-4">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-xl font-medium">Call Duration Distribution</CardTitle>
           </CardHeader>

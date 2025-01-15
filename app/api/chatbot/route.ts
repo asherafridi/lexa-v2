@@ -1,4 +1,5 @@
 import prisma from "@/lib/db";
+import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 // Middleware to add CORS headers
@@ -15,7 +16,7 @@ export async function OPTIONS() {
 }
 
 export async function POST(req: NextRequest) {
-  const { id, msg } = await req.json();
+  const { id, message } = await req.json();
 
   const user = await prisma.user.findFirst({
     where: {
@@ -23,8 +24,27 @@ export async function POST(req: NextRequest) {
     },
   });
 
+  
+  const response = await axios.post(
+    `http://46.202.179.35:83/api/chat/${user?.knowledgeBaseId}`,
+    { 
+      message: message, 
+      user_id : user?.userId
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-Key": user?.apiKey,
+      },
+    }
+  );
+
+  
+  console.log(response.data);
+
   return NextResponse.json(
-    { ans: `Hi ${user?.name}, your email address is ${user?.email}` },
+    { ans: response.data.response
+     },
     {
       status: 200,
       headers: setCorsHeaders(),

@@ -9,6 +9,7 @@ import Link from "next/link"
 import { useContactDelete } from "@/hooks/contactHook"
 import { useRouter } from "next/navigation"
 import { useVectorDelete } from "@/hooks/vectorHook"
+import { formatDate } from "@/hooks/userHook"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -17,6 +18,7 @@ export type Vector = {
     name: string
     description: string
     text: string
+    created_at: string
 }
 
 
@@ -28,6 +30,9 @@ export const columns: ColumnDef<Vector>[] = [
     {
         accessorKey: "created_at",
         header: "Created At",
+        cell : ({row})=>{
+          return formatDate(row.original.created_at)
+        }
     },
     {
       id: "actions",

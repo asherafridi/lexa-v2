@@ -80,4 +80,12 @@ const useUserDelete = async (id: string): Promise<void> => {
     }
   };
 
-  export { useUserDelete, useAllUserFetch, useFetchUser,useFetchMainBalance};
+  
+  const formatDate = (dateString:any) => {
+    if (!dateString) return "No date provided";
+  
+    const date = new Date(dateString);
+    return date.toLocaleString(); // Adjust toLocaleString options for specific formatting
+  };
+
+  export { useUserDelete, useAllUserFetch, useFetchUser,useFetchMainBalance,formatDate};

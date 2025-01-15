@@ -22,7 +22,7 @@ const Page = () => {
 
         axios.post('/api/chatbot/knowledge', data)
             .then(response => {
-                toast.success(response.data?.msg);
+                toast.success(response.data?.message);
                 setTimeout(() => {
                     setLoading(false);
                     form.reset();
