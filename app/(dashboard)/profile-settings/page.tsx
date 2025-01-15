@@ -15,7 +15,6 @@ const Page = () => {
 
     return (
         <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Profile Settings" />
             <div className=" mt-4 rounded p-4 flex justify-center">
                 <Tabs defaultValue="account" className="w-full">
                     <TabsList className='flex justify-center gap-4 bg-background border py-2'>
