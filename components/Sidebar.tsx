@@ -73,14 +73,14 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any; setSidebar: any }) => 
     <div>
       {/* Sidebar */}
       <div
-        className={`sidebar w-[300px] p-3 text-sm bg-white rounded-lg border border-gray-300  text-foreground  lg:fixed shadow-sm lg:block ${sidebar ? "block" : "hidden"
+        className={`sidebar w-[300px] max-h-screen overflow-y-auto p-3 text-sm bg-white rounded-lg border border-gray-300  text-foreground  lg:fixed shadow-sm lg:block ${sidebar ? "block" : "hidden"
           }`}
       >
         <div className='hidden lg:block'>
            <h1 className='text-2xl font-semibold '>LexaTalk</h1>
            <p>AI Phone Caller Maker</p>
          </div>
-        <div className="mt-16">
+        <div className="mt-16 mb-4">
           <ul className="grid gap-2 menu">
             {menuItems.map(({ href, icon, text, key, submenu }) => (
               <React.Fragment key={key}>
