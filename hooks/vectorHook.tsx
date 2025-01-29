@@ -22,7 +22,8 @@ const useVectorFetch = ()=>{
     const fetchData = async () => {
       try {
         const response = await axios.get('/api/vector');
-        setVectors(response.data.vectors);
+        console.log(response.data);
+        setVectors(response.data.vectors.data.vectors);
         setVectorLoader(false);
         
       } catch (error) {
@@ -69,8 +70,8 @@ const useFetchVectorDetail = (id:string)=>{
     const fetchData = async () => {
       try {
         const response = await axios.post(`/api/vector/read`,{id :id});
-        
-        setVectors(response.data.vector);
+        console.log(response.data.vector);
+        setVectors(response.data.vector.data);
         setVectorLoader(false);
         
       } catch (error) {
@@ -88,10 +89,10 @@ const useFetchVectorDetail = (id:string)=>{
 
 const useVectorDelete = async (id: string): Promise<void> => {
   try {
-    const response = await axios.post(`/api/vector/remove`, { id });
+    const response = await axios.post(`/api/vector/delete`, { id });
     toast.success(response?.data?.msg);
   } catch (error:any) {
-    toast.error(error?.data?.error || 'An error occurred while deleting the contact.');
+    toast.error(error?.data?.error || 'An error occurred while deleting the Vector.');
   }
 };
 export {useVectorFetch,useFetchVectorDetail,useVectorDelete, useToolsFetch};

@@ -5,7 +5,6 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Upload } from 'lucide-react';
-import { useForm } from 'react-hook-form';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import FormButton from '@/components/FormButton';
@@ -22,9 +21,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
-
 import { Textarea } from '@/components/ui/textarea';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useFetchNumber, useFetchVoice } from '@/hooks/agentHook'
 import { useNumberFetch } from '@/hooks/numberHook';
 import { useToolsFetch, useVectorFetch } from '@/hooks/vectorHook';
@@ -32,309 +29,297 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Card } from '@/components/ui/card';
 
 const Page = () => {
-
     const { voice, voiceLoader } = useFetchVoice();
     const { number, numberLoader } = useNumberFetch();
     const { vector, vectorLoader } = useVectorFetch();
     const { tools, toolsLoader } = useToolsFetch();
-
-
-    const form = useForm();
     const [loading, setLoading] = useState(false);
+    const [formState, setFormState] = useState({
+        name: '',
+        voice: '',
+        numberId: '',
+        first_sentence: '',
+        wait_for_greeting: 'false',
+        prompt: '',
+        max_duration: '1',
+        transfer_number: '',
+        language: 'en-us',
+        model: 'enhanced',
+        information: '',
+        tools: ''
+    });
 
-    const submit = (values: any) => {
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
         setLoading(true);
-        console.log(values);
-        axios.post('/api/agent/create', values).then(response => {
+        
+        try {
+            const response = await axios.post('/api/agent/create', formState);
             toast.success(response.data?.msg);
             setTimeout(() => {
                 setLoading(false);
-                form.reset();
-            })
-        }).catch(e => {
-            toast.error(e?.response?.data?.error);
+                // Reset form
+                setFormState({
+                    name: '',
+                    voice: '',
+                    numberId: '',
+                    first_sentence: '',
+                    wait_for_greeting: 'false',
+                    prompt: '',
+                    max_duration: '1',
+                    transfer_number: '',
+                    language: 'en-us',
+                    model: 'enhanced',
+                    information: '',
+                    tools: ''
+                });
+                
+            }, 2000);
+        } catch (error: any) {
+            toast.error(error?.response?.data?.error || 'An error occurred');
+            console.error(error);
             setLoading(false);
-            console.log(e);
-        });
-    }
+        }
+    };
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormState(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSelectChange = (name: string, value: string) => {
+        setFormState(prev => ({ ...prev, [name]: value }));
+    };
 
     if (numberLoader || voiceLoader) {
         return <Skeleton className='w-full h-[400px] rounded mt-4' />;
     }
 
     return (
-        <Card className=" rounded p-4">
+        <Card className="rounded p-4">
             <div className='flex justify-between items-center'>
                 <h3>Create New Agent</h3>
             </div>
 
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(submit)} className="mt-4 flex w-full  flex-wrap ">
-                    <FormField
-                        control={form.control}
+            <form onSubmit={handleSubmit} className="mt-4 flex w-full flex-wrap">
+                {/* Name Field */}
+                <div className='w-full md:w-1/2 lg:w-1/3 p-2'>
+                    <Label>Name</Label>
+                    <Input
                         name="name"
-                        render={({ field }) => (
-                            <FormItem className='w-full md:w-1/2 lg:w-1/3 p-2'>
-                                <FormLabel>Name</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Agent Name" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
+                        placeholder="Agent Name"
+                        value={formState.name}
+                        onChange={handleInputChange}
                     />
+                </div>
 
+                {/* Voice Select */}
+                <div className='w-full md:w-1/2 lg:w-1/3 p-2'>
+                    <Label>Voice</Label>
+                    <Select
+                        value={formState.voice}
+                        onValueChange={(value) => handleSelectChange('voice', value)}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select voice" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {voice.map((element, index) => (
+                                <SelectItem key={index} value={element?.id}>
+                                    {element?.name} - {element?.description}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
 
-                    <FormField
-                        control={form.control}
-                        name="voice"
-                        render={({ field }) => (
-                            <FormItem className='w-full md:w-1/2 lg:w-1/3 p-2'>
-                                <FormLabel>Voice</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Voice" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        {voice.map((element, index) => (
-                                            <SelectItem key={index} value={element?.id}>{element?.name} - {element?.description}</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                {/* Number Select */}
+                <div className='w-full md:w-1/2 lg:w-1/3 p-2'>
+                    <Label>Number</Label>
+                    <Select
+                        value={formState.numberId}
+                        onValueChange={(value) => handleSelectChange('numberId', value)}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select number" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {number.map((element, index) => (
+                                <SelectItem key={index} value={`${element?.phone_number}`}>
+                                    {element?.phone_number}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
 
-                    <FormField
-                        control={form.control}
-                        name="numberId"
-                        render={({ field }) => (
-                            <FormItem className='w-full md:w-1/2 lg:w-1/3 p-2'>
-                                <FormLabel>Number</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Number" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        {number.map((element, index) => (
-                                            <SelectItem key={index} value={`${element?.phone_number}`}>{element?.phone_number}</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-                    <FormField
-                        control={form.control}
+                {/* First Sentence */}
+                <div className='w-full md:w-1/2 lg:w-1/2 p-2'>
+                    <Label>First Sentence</Label>
+                    <Input
                         name="first_sentence"
-                        render={({ field }) => (
-                            <FormItem className='w-full md:w-1/2 lg:w-1/2 p-2'>
-                                <FormLabel>First Sentence</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="First Sentence" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
+                        placeholder="First Sentence"
+                        value={formState.first_sentence}
+                        onChange={handleInputChange}
                     />
+                </div>
 
-                    <FormField
-                        control={form.control}
-                        name="wait_for_greeting"
-                        render={({ field }) => (
-                            <FormItem className='w-full md:w-1/2 lg:w-1/2 p-2'>
-                                <FormLabel>Wait For Greeting</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue='false'>
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Wait For Greeting" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        <SelectItem value='true'>True</SelectItem>
-                                        <SelectItem value='false'>False</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                {/* Wait for Greeting */}
+                <div className='w-full md:w-1/2 lg:w-1/2 p-2'>
+                    <Label>Wait For Greeting</Label>
+                    <Select
+                        value={formState.wait_for_greeting}
+                        onValueChange={(value) => handleSelectChange('wait_for_greeting', value)}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select option" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="true">True</SelectItem>
+                            <SelectItem value="false">False</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
 
-
-
-                    <FormField
-                        control={form.control}
+                {/* Prompt Textarea */}
+                <div className='w-full mb-4 p-2'>
+                    <Label>Prompt</Label>
+                    <Textarea
                         name="prompt"
-                        render={({ field }) => (
-                            <FormItem className='w-full mb-4'>
-                                <FormLabel>Prompt</FormLabel>
-                                <FormControl>
-                                    <Textarea placeholder="Type your prompt here...." {...field} className='w-full' rows={10} />
-                                </FormControl>
-                                <FormMessage />
-                                <FormDescription className='text-right text-blue'><a className='text-blue-800 ' href="">Prompt Guide</a></FormDescription>
-                            </FormItem>
-                        )}
+                        placeholder="Type your prompt here...."
+                        value={formState.prompt}
+                        onChange={handleInputChange}
+                        className='w-full'
+                        rows={10}
                     />
+                    <div className='text-right mt-2'>
+                        <a className='text-blue-800' href="">Prompt Guide</a>
+                    </div>
+                </div>
 
-                    
-<FormField
-                                    control={form.control}
-                                    name="max_duration"
-                                    defaultValue="1"
-                                    render={({ field }) => (
-                                        <FormItem className='w-full md:w-1/2 lg:w-1/4 p-2'>
-                                            <FormLabel>Max Duration</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="Max Duration" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                {/* Max Duration */}
+                <div className='w-full md:w-1/2 lg:w-1/4 p-2'>
+                    <Label>Max Duration</Label>
+                    <Input
+                        name="max_duration"
+                        placeholder="Max Duration"
+                        value={formState.max_duration}
+                        onChange={handleInputChange}
+                    />
+                </div>
 
+                {/* Transfer Number */}
+                <div className='w-full md:w-1/2 lg:w-1/4 p-2'>
+                    <Label>Transfer Number</Label>
+                    <Input
+                        name="transfer_number"
+                        placeholder="Transfer Call to"
+                        value={formState.transfer_number}
+                        onChange={handleInputChange}
+                    />
+                </div>
 
-                                <FormField
-                                    control={form.control}
-                                    name="transfer_number"
-                                    render={({ field }) => (
-                                        <FormItem className='w-full md:w-1/2 lg:w-1/4 p-2'>
-                                            <FormLabel>Transfer Number</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="Transfer Call to" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                {/* Language Select */}
+                <div className='w-full md:w-1/2 lg:w-1/4 p-2'>
+                    <Label>Language</Label>
+                    <Select
+                        value={formState.language}
+                        onValueChange={(value) => handleSelectChange('language', value)}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select language" />
+                        </SelectTrigger>
+                        <SelectContent>
+                                              <SelectItem value="en-us">English</SelectItem>
+                                              <SelectItem value="zh">Chinese</SelectItem>
+                                              <SelectItem value="es">Spanish</SelectItem>
+                                              <SelectItem value="fr">French</SelectItem>
+                                              <SelectItem value="de">German</SelectItem>
+                                              <SelectItem value="el">Greek</SelectItem>
+                                              <SelectItem value="hi">Hindi</SelectItem>
+                                              <SelectItem value="ja">Japanese</SelectItem>
+                                              <SelectItem value="ko">Korean</SelectItem>
+                                              <SelectItem value="pt">Portuguese</SelectItem>
+                                              <SelectItem value="it">Italian</SelectItem>
+                                              <SelectItem value="nl">Dutch</SelectItem>
+                                              <SelectItem value="pl">Polish</SelectItem>
+                                              <SelectItem value="ru">Russian</SelectItem>
+                                              <SelectItem value="sv">Swedish</SelectItem>
+                                              <SelectItem value="da">Danish</SelectItem>
+                                              <SelectItem value="fi">Finnish</SelectItem>
+                                              <SelectItem value="id">Indonesian</SelectItem>
+                                              <SelectItem value="ms">Malay</SelectItem>
+                                              <SelectItem value="tr">Turkish</SelectItem>
+                                              <SelectItem value="uk">Ukrainian</SelectItem>
+                                              <SelectItem value="bg">Bulgarian</SelectItem>
+                                              <SelectItem value="cs">Czech</SelectItem>
+                                              <SelectItem value="ro">Romanian</SelectItem>
+                                              <SelectItem value="sk">Slovak</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
 
-                                <FormField
-                                    control={form.control}
-                                    name="language"
-                                    render={({ field }) => (
-                                        <FormItem className='w-full md:w-1/2 lg:w-1/4 p-2'>
-                                            <FormLabel>Language</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue='ENG'>
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Wait For Greeting" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                        <SelectItem value="en-us">English</SelectItem>
-                                                        <SelectItem value="zh">Chinese</SelectItem>
-                                                        <SelectItem value="es">Spanish</SelectItem>
-                                                        <SelectItem value="fr">French</SelectItem>
-                                                        <SelectItem value="de">German</SelectItem>
-                                                        <SelectItem value="el">Greek</SelectItem>
-                                                        <SelectItem value="hi">Hindi</SelectItem>
-                                                        <SelectItem value="ja">Japanese</SelectItem>
-                                                        <SelectItem value="ko">Korean</SelectItem>
-                                                        <SelectItem value="pt">Portuguese</SelectItem>
-                                                        <SelectItem value="it">Italian</SelectItem>
-                                                        <SelectItem value="nl">Dutch</SelectItem>
-                                                        <SelectItem value="pl">Polish</SelectItem>
-                                                        <SelectItem value="ru">Russian</SelectItem>
-                                                        <SelectItem value="sv">Swedish</SelectItem>
-                                                        <SelectItem value="da">Danish</SelectItem>
-                                                        <SelectItem value="fi">Finnish</SelectItem>
-                                                        <SelectItem value="id">Indonesian</SelectItem>
-                                                        <SelectItem value="ms">Malay</SelectItem>
-                                                        <SelectItem value="tr">Turkish</SelectItem>
-                                                        <SelectItem value="uk">Ukrainian</SelectItem>
-                                                        <SelectItem value="bg">Bulgarian</SelectItem>
-                                                        <SelectItem value="cs">Czech</SelectItem>
-                                                        <SelectItem value="ro">Romanian</SelectItem>
-                                                        <SelectItem value="sk">Slovak</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                {/* Model Select */}
+                <div className='w-full md:w-1/2 lg:w-1/4 p-2'>
+                    <Label>Model</Label>
+                    <Select
+                        value={formState.model}
+                        onValueChange={(value) => handleSelectChange('model', value)}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select model" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value='enhanced'>Enhanced</SelectItem>
+                            <SelectItem value='gpt4'>GPT 4</SelectItem>
+                            <SelectItem value='base'>Base</SelectItem>
+                            <SelectItem value='turbo'>Turbo</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
 
-                                <FormField
-                                    control={form.control}
-                                    name="model"
-                                    render={({ field }) => (
-                                        <FormItem className='w-full md:w-1/2 lg:w-1/4 p-2'>
-                                            <FormLabel>Model</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue='enhanced'>
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Model" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    <SelectItem value='enhanced'>Enhanced</SelectItem>
-                                                    <SelectItem value='gpt4'>GPT 4</SelectItem>
-                                                    <SelectItem value='base'>Base</SelectItem>
-                                                    <SelectItem value='turbo'>Turbo</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                {/* Information Select */}
+                <div className='w-full md:w-full lg:w-1/2 p-2'>
+                    <Label>Company Informations</Label>
+                    <Select
+                        value={formState.information}
+                        onValueChange={(value) => handleSelectChange('information', value)}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select information" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {vector?.map((element, index) => (
+                                <SelectItem key={index} value={element?.vector_id}>
+                                    {element?.name} - {element?.description}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
 
+                {/* Tools Select */}
+                <div className='w-full md:w-full lg:w-1/2 p-2 pb-4'>
+                    <Label>Tools</Label>
+                    <Select
+                        value={formState.tools}
+                        onValueChange={(value) => handleSelectChange('tools', value)}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select tool" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {tools?.map((element, index) => (
+                                <SelectItem key={index} value={element?.tool_id}>
+                                    {element?.tool?.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
 
-                                <FormField
-                                    control={form.control}
-                                    name="information"
-                                    render={({ field }) => (
-                                        <FormItem className='w-full md:w-full lg:w-1/2 p-2'>
-                                            <FormLabel>Company Informations</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Information" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    {vector.map((element, index) => (
-                                                        <SelectItem key={index} value={element?.vector_id}>{element?.name} - {element?.description}</SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-
-                                <FormField
-                                    control={form.control}
-                                    name="tools"
-                                    render={({ field }) => (
-                                        <FormItem className='w-full md:w-full lg:w-1/2 p-2 pb-4'>
-                                            <FormLabel>Tools</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Tools" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    {tools.map((element, index) => (
-                                                        <SelectItem key={index} value={element?.tool_id}>{element?.tool?.name}</SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-
-                    <FormButton state={loading} text='Create New Agent' />
-                </form>
-            </Form>
+                <FormButton state={loading} text='Create New Agent' />
+            </form>
         </Card>
     )
 }

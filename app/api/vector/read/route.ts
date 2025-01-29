@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
         const options = {method: 'GET', headers: {authorization: session.user.key_token}};
     
     
-        const response = await axios.get(`https://kb.bland.ai/vectors/${id}?include_text=true`,options);
+        const response = await axios.get(`https://api.bland.ai/v1/knowledgebases/${id}?include_text=true`,options);
         return NextResponse.json({vector:response.data},{status:200});
     }catch(e){
         

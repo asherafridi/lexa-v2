@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
             text: `${text}`
         };
 
-        const request = await axios.post('https://kb.bland.ai/vectors', requestData, options);
+        const request = await axios.post('https://api.bland.ai/v1/knowledgebases', requestData, options);
         console.log(request.data);
         return NextResponse.json({ msg: 'Vector Store Created' }, { status: 200 });
 

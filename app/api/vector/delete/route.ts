@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
             }
         };
 
-        const response = await axios.post(`https://kb.bland.ai/vectors/${id}/delete`, {}, options);
+        const response = await axios.post(`https://api.bland.ai/v1/knowledgebases/${id}/delete`, {}, options);
 
         return NextResponse.json({ msg: response.data.message }, { status: 200 });
 

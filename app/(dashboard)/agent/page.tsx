@@ -30,9 +30,9 @@ const Page = () => {
           <Link href='/agent/create' ><Button>Create New Agent</Button></Link>
           <Link href='/call/create' className='ml-4 mt-2 md:mt-0' ><Button variant={'secondary'}>Make a Call</Button></Link></div>
       </div>
-      <div className=" mt-4 rounded p-4 flex gap-2 flex-wrap">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
         {data?.map((element, index) => (
-          <div key={index} className='bg-white border rounded w-full md:w-1/2 lg:w-1/4 p-3'>
+          <div key={index} className='bg-white border rounded w-full p-3'>
             <div className='flex justify-between'>
               <div className='flex items-center gap-4'>
                 <Avatar>

@@ -14,8 +14,7 @@ export async function POST(req: NextRequest) {
 
     try {
 
-        const vectorIds = tools.map((item:any) => item.vector_id);
-console.log(JSON.stringify(vectorIds));
+        const vectorIds = [ tools].filter(item => item !== null && item !== undefined);
         const contact = await prisma.agent.update({
             where: {
                 id: +id

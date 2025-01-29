@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
   
   const response = await axios.post(
-    `http://46.202.179.35:83/api/chat/${user?.knowledgeBaseId}`,
+    `https://lexachat.aireceptionistpro.com/api/chat/${user?.knowledgeBaseId}`,
     { 
       message: message, 
       user_id : user?.userId

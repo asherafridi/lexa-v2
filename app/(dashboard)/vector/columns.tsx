@@ -22,10 +22,6 @@ export type Vector = {
 
 export const columns: ColumnDef<Vector>[] = [
     {
-        accessorKey: "vector_id",
-        header: "#",
-    },
-    {
         accessorKey: "name",
         header: "Name",
     },
