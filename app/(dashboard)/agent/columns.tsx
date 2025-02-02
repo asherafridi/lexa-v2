@@ -7,7 +7,6 @@ import { ColumnDef } from "@tanstack/react-table"
 import { BarChart, EllipsisVertical, MoreHorizontal } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useAgentDelete } from "@/hooks/agentHook"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -62,11 +61,7 @@ export const columns: ColumnDef<Agent>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem><Link href={`/agent/edit/${payment.id}`}>Edit Agent</Link></DropdownMenuItem>
-            <DropdownMenuItem onClick={() => {
-              if (confirm('Are you sure?')) {
-                useAgentDelete(payment.id);
-              }
-            }}>Delete Agent</DropdownMenuItem>
+            
           </DropdownMenuContent>
         </DropdownMenu>
       )
