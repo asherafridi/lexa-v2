@@ -2,10 +2,13 @@ import prisma from "@/lib/db";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
-// Middleware to add CORS headers
+// Configure timeout (in milliseconds)
+const AXIOS_TIMEOUT = 10000; // 10 seconds
+const DATABASE_TIMEOUT = 5000; // 5 seconds
+
 function setCorsHeaders() {
   return {
-    'Access-Control-Allow-Origin': '*', // Set to your frontend domain for security
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
@@ -16,38 +19,64 @@ export async function OPTIONS() {
 }
 
 export async function POST(req: NextRequest) {
-  const { id, message } = await req.json();
+  try {
+    const { id, message } = await req.json();
 
-  const user = await prisma.user.findFirst({
-    where: {
-      id: +id,
-    },
-  });
+    // Add database timeout
+    const user = await prisma.user.findFirst({
+      where: { id: +id },
+    }).catch((error) => {
+      console.error('Database error:', error);
+      throw new Error('Database operation failed');
+    });
 
-  
-  const response = await axios.post(
-    `https://lexachat.aireceptionistpro.com/api/chat/${user?.knowledgeBaseId}`,
-    { 
-      message: message, 
-      user_id : user?.userId
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-Key": user?.apiKey,
+    if (!user) {
+      return NextResponse.json(
+        { error: "User not found" },
+        { status: 404, headers: setCorsHeaders() }
+      );
+    }
+
+    // Validate required fields
+    if (!user.knowledgeBaseId || !user.apiKey) {
+      return NextResponse.json(
+        { error: "Missing required user configuration" },
+        { status: 400, headers: setCorsHeaders() }
+      );
+    }
+
+    const response = await axios.post(
+      `https://lexachat.aireceptionistpro.com/api/chat/${user.knowledgeBaseId}`,
+      { 
+        message: message,
+        user_id: user.userId || undefined // Send undefined instead of null
       },
-    }
-  );
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-Key": user.apiKey,
+        },
+        timeout: AXIOS_TIMEOUT
+      }
+    );
 
-  
-  console.log(response.data);
+    return NextResponse.json(
+      { ans: response.data.response },
+      { status: 200, headers: setCorsHeaders() }
+    );
 
-  return NextResponse.json(
-    { ans: response.data.response
-     },
-    {
-      status: 200,
-      headers: setCorsHeaders(),
-    }
-  );
+  } catch (error) {
+    console.error('API Error:', error);
+
+
+    return NextResponse.json(
+      { 
+        error: error
+      },
+      { 
+        status: 500,
+        headers: setCorsHeaders() 
+      }
+    );
+  }
 }
