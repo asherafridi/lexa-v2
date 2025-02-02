@@ -52,11 +52,11 @@ const Page = () => {
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem><Link href={`/agent/edit/${element.id}`}>Edit Agent</Link></DropdownMenuItem>
-                  {/* <DropdownMenuItem onClick={() => {
+                  <DropdownMenuItem onClick={() => {
                     if (confirm('Are you sure?')) {
                       useAgentDelete(element.id);
                     }
-                  }}>Delete Agent</DropdownMenuItem> */}
+                  }}>Delete Agent</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOption } from '@/lib/auth';
 
 export async function POST(req: NextRequest) {
-    const { id, name, numberId,voice,prompt,first_sentence,language,max_duration,model,transfer_number,wait_for_greeting,tools } = await req.json();
+    const { id, name, numberId,voice,prompt,first_sentence,language,max_duration,model,transfer_number,wait_for_greeting,tools,information } = await req.json();
     const session = await getServerSession(authOption);
 
 
@@ -14,7 +14,6 @@ export async function POST(req: NextRequest) {
 
     try {
 
-        const vectorIds = [ tools].filter(item => item !== null && item !== undefined);
         const contact = await prisma.agent.update({
             where: {
                 id: +id
@@ -32,7 +31,8 @@ export async function POST(req: NextRequest) {
                 model : model,
                 transferNumber : transfer_number,
                 waitForGreeting : `${wait_for_greeting}`,
-                tools : JSON.stringify(vectorIds)
+                tools : tools,
+                vector: information
             }
         });
 

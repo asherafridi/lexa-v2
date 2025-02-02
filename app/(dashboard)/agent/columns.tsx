@@ -62,11 +62,11 @@ export const columns: ColumnDef<Agent>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem><Link href={`/agent/edit/${payment.id}`}>Edit Agent</Link></DropdownMenuItem>
-            {/* <DropdownMenuItem onClick={() => {
+            <DropdownMenuItem onClick={() => {
               if (confirm('Are you sure?')) {
                 useAgentDelete(payment.id);
               }
-            }}>Delete Agent</DropdownMenuItem> */}
+            }}>Delete Agent</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

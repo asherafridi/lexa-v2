@@ -46,7 +46,7 @@ const Page = () => {
         language: 'en-us',
         model: 'enhanced',
         information: '',
-        tools: ''
+        tools: '',
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -71,7 +71,7 @@ const Page = () => {
                     language: 'en-us',
                     model: 'enhanced',
                     information: '',
-                    tools: ''
+                    tools: '',
                 });
                 
             }, 2000);

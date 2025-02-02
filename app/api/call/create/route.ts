@@ -24,8 +24,13 @@ export async function POST(req: NextRequest) {
                 id: +contactId
             }
         });
-        const tools = agent?.tools ? JSON.parse(agent.tools) : null;
-        console.log(tools);
+
+        const tool2 = [
+            ...(agent?.vector ? [agent.vector] : []),
+            ...(agent?.tools ? [agent.tools] : [])
+          ].filter(Boolean);
+
+          console.log(tool2);
         
         const options = {
             method: 'POST',
@@ -33,25 +38,24 @@ export async function POST(req: NextRequest) {
                 authorization: session.user.key_token,
                 'Content-Type': 'application/json'
             },
-            data: {
-                phone_number: contact?.number,           
-                task: agent?.prompt,                     
-                voice: agent?.voice,                     
-                first_sentence: agent?.firstSentence,    
+            data: {phone_number: contact?.number,
+                task: agent?.prompt,
+                voice: agent?.voice,
+                first_sentence: agent?.firstSentence,
                 wait_for_greeting: true,
                 interruption_threshold: 50,
                 record: true,
-                max_duration: +duration,
+                max_duration: agent?.maxDuration ? +agent.maxDuration : 1,
                 answered_by_enabled: true,
-                from: agent?.numberId,                
+                from: agent?.numberId,
                 temperature: 0.7,
-                tools: tools,                           
+                tools: tool2 ? tool2 : [{}]                       
             }
         };
         
         // Make the POST request and wait for the response
         const response = await axios.post('https://api.bland.ai/v1/calls', options.data, { headers: options.headers });
-        console.log(response);
+        // console.log(response);
         return NextResponse.json({ msg: 'Calling...' }, { status: 200 });
 
     } catch (e) {

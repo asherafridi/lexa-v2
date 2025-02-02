@@ -65,4 +65,5 @@ model Agent {
   user            User    @relation(fields: [userId], references: [id], onDelete: Cascade) // Establish relation
   userId          Int
   tools           String?
+  vector          String?
 }

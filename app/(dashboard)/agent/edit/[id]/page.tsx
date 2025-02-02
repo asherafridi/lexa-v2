@@ -102,7 +102,7 @@ const Page = ({ params }: { params: { id: string } }) => {
         transfer_number: data.transferNumber || "",
         language: data.language || "en-us",
         model: data.model || "enhanced",
-        information: data.tools || "",
+        information: data.vector || "",
         tools: data.tools || "",
       });
     }

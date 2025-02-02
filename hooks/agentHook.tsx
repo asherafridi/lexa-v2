@@ -20,6 +20,7 @@ interface Agent {
   language : string;
   model :string;
   tools :string;
+  vector : string;
 }
 const useAllAgentFetch = () => {
     const [data, setData] = useState<Agent[]>([]);
@@ -67,6 +68,7 @@ const useAgentDelete = async (id: string): Promise<void> => {
     try {
       const response = await axios.post(`/api/agent/remove`, { id });
       toast.success(response?.data?.msg);
+      setTimeout(()=>{window.location.reload()},1000);
     } catch (error:any) {
       toast.error(error?.data?.error || 'An error occurred while deleting the contact.');
     }

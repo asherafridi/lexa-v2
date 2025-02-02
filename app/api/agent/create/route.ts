@@ -14,7 +14,6 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const vectorIds = [information, tools].filter(item => item !== null && item !== undefined);
 
 
         const contact = await prisma.agent.create({
@@ -31,7 +30,8 @@ export async function POST(req: NextRequest) {
                 model: model,
                 transferNumber: transfer_number,
                 waitForGreeting: `${wait_for_greeting}`,
-                tools: JSON.stringify(vectorIds)
+                tools: tools,
+                vector: information
             }
         });
 
