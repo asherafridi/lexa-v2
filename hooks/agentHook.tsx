@@ -64,7 +64,7 @@ const useFetchAgent = (id: string) => {
     return {data,loader};
 };
 
-const useAgentDelete = async (id: string): Promise<void> => {
+const agentDelete = async (id: string): Promise<void> => {
     try {
       const response = await axios.post(`/api/agent/remove`, { id });
       toast.success(response?.data?.msg);
@@ -149,4 +149,4 @@ const useAgentDelete = async (id: string): Promise<void> => {
 
   
 
-export { useFetchAgent,useAllAgentFetch ,useAgentDelete,useFetchVoice,useFetchNumber};
+export { useFetchAgent,useAllAgentFetch ,agentDelete,useFetchVoice,useFetchNumber};

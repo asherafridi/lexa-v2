@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
-import { useAgentDelete } from '@/hooks/agentHook';
+import { agentDelete } from '@/hooks/agentHook';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const Page = () => {
@@ -16,7 +16,7 @@ const Page = () => {
 
   const handleDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this agent?')) {
-      useAgentDelete(id);
+      agentDelete(id);
     }
   };
 
