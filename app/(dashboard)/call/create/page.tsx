@@ -25,9 +25,14 @@ const Page = () => {
         try {
             const response = await axios.post('/api/call/create', values);
             toast.success(response.data?.msg);
-            form.reset();
+            setTimeout(()=>{
+                window.location.reload();
+            },1000);
         } catch (e: any) {
             toast.error(e?.response?.data?.msg || 'Failed to create call');
+            setTimeout(()=>{
+                window.location.reload();
+            },1000);
         } finally {
             setButtonLoading(false);
         }
@@ -91,21 +96,6 @@ const Page = () => {
                                 )}
                             />
 
-
-                            <FormField
-                                control={form.control}
-                                name="duration"
-                                defaultValue={1}
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Max Duration</FormLabel>
-                                        <FormControl>
-                                            <Input type='number' {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
                             <FormButton state={buttonLoading} />
                         </form>
                     </Form>
