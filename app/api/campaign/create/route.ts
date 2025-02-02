@@ -37,7 +37,11 @@ export async function POST(req: NextRequest) {
         });
 
 
-        const tools = agent?.tools ? JSON.parse(agent.tools) : null;
+        const tool2 = [
+            ...(agent?.vector ? [agent.vector] : []),
+            ...(agent?.tools ? [agent.tools] : [])
+          ].filter(Boolean);
+
         const options = {
             method: 'POST',
             headers: {
@@ -49,9 +53,9 @@ export async function POST(req: NextRequest) {
                 call_data: contacts,
                 label: `${name}`,
                 test_mode: true,
-                // from : `${agent?.numberId}`,
-                // record : true,
-                // tools : tools
+                from : `${agent?.numberId}`,
+                record : true,
+                tools: tool2 ? tool2 : [{}] 
             }
         };
 
