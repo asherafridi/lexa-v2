@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
 
     // Call the external API to create a knowledge base
     const externalApiResponse = await axios.post(
-      "http://46.202.179.35:83/api/knowledge",
+      "https://lexachat.aireceptionistpro.com/api/knowledge",
       { text },
       {
         headers: { "Content-Type": "application/json" },
