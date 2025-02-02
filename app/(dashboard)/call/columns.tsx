@@ -7,7 +7,6 @@ import { ColumnDef } from "@tanstack/react-table"
 import { BarChart, EllipsisVertical, MoreHorizontal } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useAgentDelete } from "@/hooks/agentHook"
 import {  useStopCall } from "@/hooks/singleCallHook"
 
 // This type is used to define the shape of our data.
