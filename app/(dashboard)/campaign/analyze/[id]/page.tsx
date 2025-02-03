@@ -13,6 +13,7 @@ import FormButton from '@/components/FormButton';
 import axios from 'axios';
 import { useFetchCampaign } from '@/hooks/campaignHook';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/components/ui/card';
 
 interface Result {
     questions: any[]
@@ -65,8 +66,8 @@ const Page = ({ params }: { params: { id: string } }) => {
     }
 
     return (
-        <div className='p-5 min-h-screen'>
-            <div className="bg-background border mt-4 rounded p-4">
+        <div className=' min-h-screen'>
+            <Card className="mt-4">
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -124,7 +125,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                             <Button
                                 type="button"
                                 onClick={() => append({ user: '', text: '' })}
-                                className="mb-2"
+                                className="mt-2"
                             >
                                 Add Field
                             </Button>
@@ -132,19 +133,19 @@ const Page = ({ params }: { params: { id: string } }) => {
                         </div>
                     </form>
                 </Form>
-            </div>
+            </Card>
 
             {result == null ? '' : <div className=''>
                 {Object.entries(result.answers).map(([key, value], index) => (
-                   <div className='bg-background border rounded mt-2 px-4 py-6' key={index}>
-                    <h1>Call id : {key}</h1>
+                   <Card className=' mt-3 px-4 py-6' key={index}>
+                    <h1><b>Call id:</b> {key}</h1>
                     {value.map((ele:any,ind:any)=>(
                         <div key={ind}>
-                        <b>Question No.{ind+1} : </b>{result.questions[ind][0]}<br />
-                        <b>Answer :</b> {ele}
+                        <b>Question No.{ind+1}: </b>{result.questions[ind][0]}<br />
+                        <b>Answer:</b> {ele}
                     </div>
                     ))}
-                   </div>
+                   </Card>
                 ))}
             </div>}
         </div>

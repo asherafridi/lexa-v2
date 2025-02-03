@@ -146,9 +146,9 @@ const Page = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="p-5 min-h-screen">
+    <div className="p-4 min-h-screen">
       <Breadcrumb />
-      <div className="bg-background border mt-4 rounded p-4">
+      <div className="bg-white border mt-4 rounded p-4">
         <form onSubmit={handleSubmit} className="flex w-full flex-wrap">
            {/* Name Field */}
            <div className="w-full md:w-1/2 lg:w-1/3 p-2">

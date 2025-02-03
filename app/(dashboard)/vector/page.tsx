@@ -7,6 +7,7 @@ import { columns} from './columns';
 import toast from 'react-hot-toast';
 import { useVectorFetch } from '@/hooks/vectorHook';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/components/ui/card';
 
 
 
@@ -14,11 +15,11 @@ const Page = () => {
   const {vector, vectorLoader } = useVectorFetch();
 
   return (
-    <div className='p-5 min-h-screen'>
-        <div className="bg-background">
+    <div className='min-h-screen'>
+        <Card className="">
           {vectorLoader ?  <Skeleton className='w-full h-[400px] rounded mt-4'/> : <DataTable columns={columns} data={vector}  />}
         
-        </div>
+        </Card>
     </div>
   )
 }

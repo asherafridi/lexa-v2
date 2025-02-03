@@ -14,7 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 const Page = ({ params }: { params: { id: string } }) => {
     const { batches, batchLoader } = useFetchCampaign(params.id);
 
-
+    
     if (batchLoader) {
         return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
     }
@@ -23,7 +23,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
 
     return (
-        <div className='p-5 min-h-screen'>
+        <div className='min-h-screen'>
 
             <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 mt-4">
                 <Card x-chunk="dashboard-01-chunk-0">

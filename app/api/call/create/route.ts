@@ -38,20 +38,23 @@ export async function POST(req: NextRequest) {
                 authorization: session.user.key_token,
                 'Content-Type': 'application/json'
             },
-            data: {phone_number: contact?.number,
+            data: {
+                phone_number: contact?.number,
                 task: agent?.prompt,
                 voice: agent?.voice,
                 first_sentence: agent?.firstSentence,
-                wait_for_greeting: true,
-                interruption_threshold: 50,
+                wait_for_greeting: agent?.waitForGreeting,
                 record: true,
                 max_duration: agent?.maxDuration ? +agent.maxDuration : 1,
                 answered_by_enabled: true,
                 from: agent?.numberId,
-                temperature: 0.7,
                 tools: tool2 ? tool2 : [{}]                       
             }
         };
+
+        
+                // interruption_threshold: 50,
+                // temperature: 0.7,
         
         // Make the POST request and wait for the response
         const response = await axios.post('https://api.bland.ai/v1/calls', options.data, { headers: options.headers });

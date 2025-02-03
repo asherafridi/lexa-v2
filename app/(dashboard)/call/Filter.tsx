@@ -9,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useAllAgentFetch } from '@/hooks/agentHook';
 import { useAllContactFetch } from '@/hooks/contactHook';
 import { useAllCampaignFetch } from '@/hooks/campaignHook';
+import { Card } from '@/components/ui/card';
 
 // Function to get the date 7 days ago in "YYYY-MM-DD" format
 const getSevenDaysAgo = () => {
@@ -51,7 +52,7 @@ const Filter = () => {
     }
 
     return (
-        <div className='bg-background border mt-4 rounded p-4'>
+        <Card className='mt-4'>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(submit)} className="w-full flex gap-2 justify-between flex-col md:flex-row">
                     <FormField
@@ -132,7 +133,7 @@ const Filter = () => {
                     </FormItem>
                 </form>
             </Form>
-        </div>
+        </Card>
     );
 };
 

@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
 
 
         const response = await axios.get(`https://api.bland.ai/v1/batches/${id}`, options);
+        console.log(response.data);
         return NextResponse.json({ batch: response.data }, { status: 200 });
     } catch (e) {
 

@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { useVectorFetch } from '@/hooks/vectorHook';
 import { useInboundAgentsFetch } from '@/hooks/inboundAgentHook';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/components/ui/card';
 
 
 
@@ -16,11 +17,11 @@ const Page = () => {
 
   
   return (
-    <div className='p-5 min-h-screen'>
-        <div className="bg-background border mt-4 rounded p-4">
+    <div className=' min-h-screen'>
+        <Card className="bg-white mt-4 p-4">
           {vectorLoader ?  <Skeleton className='w-full h-[400px] rounded mt-4'/> : <DataTable columns={columns} data={vector}  />}
         
-        </div>
+        </Card>
     </div>
   )
 }
