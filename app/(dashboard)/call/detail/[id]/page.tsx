@@ -11,7 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 const Page = ({ params }: { params: { id: string } }) => {
     const { call, callLoader } = useFetchCall(params.id);
 
-
+    console.log(call);
     if (callLoader) {
         return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
     }

@@ -1,264 +1,255 @@
-"use client"
-import Breadcrumb from '@/components/Breadcrumb';
-import FormButton from '@/components/FormButton';
-import { Input } from '@/components/ui/input';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { useFetchAgent, useFetchVoice } from '@/hooks/agentHook';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-
-import { useNumberFetch } from '@/hooks/numberHook';
-import { useInboundAgentDetail } from '@/hooks/inboundAgentHook';
-import { useToolsFetch, useVectorFetch } from '@/hooks/vectorHook';
-import { Skeleton } from '@/components/ui/skeleton';
-
-
+"use client";
+import Breadcrumb from "@/components/Breadcrumb";
+import FormButton from "@/components/FormButton";
+import { Input } from "@/components/ui/input";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useFetchVoice } from "@/hooks/agentHook";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { useInboundAgentDetail } from "@/hooks/inboundAgentHook";
+import { useToolsFetch, useVectorFetch } from "@/hooks/vectorHook";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Page = ({ params }: { params: { id: string } }) => {
-    const { voice, voiceLoader } = useFetchVoice();
-    const [loading, setLoading] = useState(false);
+  const { voice } = useFetchVoice();
+  const [loading, setLoading] = useState(false);
+  const { agent, agentLoader } = useInboundAgentDetail(params.id);
+  const { vector } = useVectorFetch();
+  const { tools } = useToolsFetch();
+  const router = useRouter();
 
-    const { agent, agentLoader } = useInboundAgentDetail(params.id);
+  // Form states
+  const [voiceId, setVoiceId] = useState("");
+  const [firstSentence, setFirstSentence] = useState("");
+  const [prompt, setPrompt] = useState("");
+  const [maxDuration, setMaxDuration] = useState(1);
+  const [transferNumber, setTransferNumber] = useState("");
+  const [language, setLanguage] = useState("");
+  const [model, setModel] = useState("");
+  const [information, setInformation] = useState("");
+  const [selectedTool, setSelectedTool] = useState("");
 
-    
-    const { vector, vectorLoader } = useVectorFetch();
-    const { tools, toolsLoader } = useToolsFetch();
-
-    console.log(agent);
-    const form = useForm();
-
-
-    const submit = (values: any) => {
-        setLoading(true);
-        axios.post(`/api/inbound-agent/update`, {
-            ...values,
-            id: params.id
-        }).then(response => {
-            toast.success(response.data?.msg);
-            setTimeout(() => {
-                setLoading(false);
-                // router.push('/inbound-agent');
-            }, 2000);
-        }).catch(e => {
-            toast.error(e.response.data?.error);
-            setLoading(false);
-            console.log(e);
-        });
+  console.log(agent);
+  useEffect(() => {
+    if (agent) {
+      setVoiceId(agent.voice || "");
+      setFirstSentence(agent.first_sentence || "");
+      setPrompt(agent.prompt || "");
+      setMaxDuration(agent.max_duration || 1);
+      setTransferNumber(agent.transfer_phone_number || "");
+      setLanguage(agent.language || "");
+      setModel(agent.model || "");
     }
+  }, [agent, voice, vector]);
 
-    if (agentLoader && voiceLoader && vectorLoader && toolsLoader) {
-        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
 
+    axios
+      .post(`/api/inbound-agent/update`, {
+        voice_id: voiceId,
+        first_sentence: firstSentence,
+        prompt,
+        max_duration: maxDuration,
+        transfer_phone_number: transferNumber,
+        language,
+        model,
+        information,
+        tools: selectedTool,
+        id: params.id,
+      })
+      .then((response) => {
+        toast.success(response.data?.msg);
+        setTimeout(() => {
+          setLoading(false);
+          router.push("/inbound-agent");
+        }, 2000);
+      })
+      .catch((e) => {
+        toast.error(e.response.data?.error);
+        setLoading(false);
+      });
+  };
 
-    return (
+  if (agentLoader) {
+    return <Skeleton className="w-full h-[400px] rounded mt-4" />;
+  }
 
-        <div className='p-5 min-h-screen'>
-            <div className="bg-background border mt-4 rounded p-4">
+  return (
+    <div className="p-5 min-h-screen">
+      <div className="bg-background border mt-4 rounded p-4">
+        <form onSubmit={handleSubmit} className="flex w-full flex-wrap">
+          <div className="w-full md:w-1/2 lg:w-1/2 p-2">
+            <label className="block text-sm font-medium mb-1">Voice</label>
+            <Select value={voiceId} onValueChange={setVoiceId}>
+              <SelectTrigger>
+                <SelectValue placeholder="Voice" />
+              </SelectTrigger>
+              <SelectContent>
+                {voice.map((element, index) => (
+                  <SelectItem key={index} value={element?.name}>
+                    {element?.name} - {element?.description}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(submit)} className="flex w-full flex-wrap">
-                        
-                        <FormField
-                            control={form.control}
-                            name="voice_id"
-                            defaultValue={agent?.voice_id}
-                            render={({ field }) => (
-                                <FormItem className='w-full md:w-1/2 lg:w-1/2 p-2'>
-                                    <FormLabel>Voice</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Voice" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {voice.map((element, index) => (
-                                                <SelectItem key={index} value={element?.id}>{element?.name} - {element?.description}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+          <div className="w-full md:w-1/2 lg:w-1/2 p-2">
+            <label className="block text-sm font-medium mb-1">
+              First Sentence
+            </label>
+            <Input
+              placeholder="First Sentence"
+              value={firstSentence}
+              onChange={(e) => setFirstSentence(e.target.value)}
+            />
+          </div>
 
-
-                        <FormField
-                            control={form.control}
-                            name="first_sentence"
-                            defaultValue={agent?.first_sentence}
-                            render={({ field }) => (
-                                <FormItem className='w-full md:w-1/2 lg:w-1/2 p-2'>
-                                    <FormLabel>First Sentence</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="First Sentence" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="prompt"
-                            defaultValue={agent?.prompt}
-                            render={({ field }) => (
-                                <FormItem className='w-full mb-4'>
-                                    <FormLabel>Prompt</FormLabel>
-                                    <FormControl>
-                                        <Textarea placeholder="Type your prompt here...." {...field} className='w-full' rows={10} />
-                                    </FormControl>
-                                    <FormMessage />
-                                    <FormDescription className='text-right text-blue'><a className='text-blue-800 ' href="">Prompt Guide</a></FormDescription>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="max_duration"
-                            defaultValue={agent?.max_duration}
-                            render={({ field }) => (
-                                <FormItem className='w-full md:w-1/2 lg:w-1/4 p-2'>
-                                    <FormLabel>Max Duration</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Max Duration" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-
-                        <FormField
-                            control={form.control}
-                            name="transfer_phone_number"
-                            defaultValue={agent?.transfer_phone_number}
-                            render={({ field }) => (
-                                <FormItem className='w-full md:w-1/2 lg:w-1/4 p-2'>
-                                    <FormLabel>Transfer Number</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Transfer Call to" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="language"
-                            defaultValue={agent?.language}
-                            render={({ field }) => (
-                                <FormItem className='w-full md:w-1/2 lg:w-1/4 p-2'>
-                                    <FormLabel>Language</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={agent?.language}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Wait For Greeting" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value='ENG'>English</SelectItem>
-                                            <SelectItem value='ESP'>Spanish</SelectItem>
-                                            <SelectItem value='FRE'>French</SelectItem>
-                                            <SelectItem value='POL'>Polish</SelectItem>
-                                            <SelectItem value='GER'>German</SelectItem>
-                                            <SelectItem value='ITA'>Italian</SelectItem>
-                                            <SelectItem value='PBR'>Brazilian Portuguese</SelectItem>
-                                            <SelectItem value='POR'>Portuguese</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="model"
-                            defaultValue={agent?.model}
-                            render={({ field }) => (
-                                <FormItem className='w-full md:w-1/2 lg:w-1/4 p-2'>
-                                    <FormLabel>Model</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={agent?.model}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Model" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value='enhanced'>Enhanced</SelectItem>
-                                            <SelectItem value='gpt4'>GPT 4</SelectItem>
-                                            <SelectItem value='base'>Base</SelectItem>
-                                            <SelectItem value='turbo'>Turbo</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                                    
-<FormField
-                            control={form.control}
-                            name="information"
-                            render={({ field }) => (
-                                <FormItem className='w-full md:w-full lg:w-full p-2'>
-                                    <FormLabel>Company Informations</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Information" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {vector.map((element, index) => (
-                                                <SelectItem key={index} value={element?.vector_id}>{element?.name} - {element?.description}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />  
-
-                        <FormField
-                            control={form.control}
-                            name="tools"
-                            render={({ field }) => (
-                                <FormItem className='w-full md:w-full lg:w-full p-2'>
-                                    <FormLabel>Tools</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Tools" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {tools.map((element, index) => (
-                                                <SelectItem key={index} value={element?.tool_id}>{element?.tool?.name}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <br /><br />
-                        <FormButton state={loading} />
-                    </form>
-                </Form>
+          <div className="w-full mb-4">
+            <label className="block text-sm font-medium mb-1">Prompt</label>
+            <Textarea
+              placeholder="Type your prompt here...."
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              className="w-full"
+              rows={10}
+            />
+            <div className="text-right mt-1">
+              <a className="text-blue-800" href="">
+                Prompt Guide
+              </a>
             </div>
-        </div>
-    )
-}
+          </div>
 
-export default Page
+          <div className="w-full md:w-1/2 lg:w-1/4 p-2">
+            <label className="block text-sm font-medium mb-1">
+              Max Duration
+            </label>
+            <Input
+              placeholder="Max Duration"
+              value={maxDuration}
+              onChange={(e) => setMaxDuration(+e.target.value)}
+            />
+          </div>
+
+          <div className="w-full md:w-1/2 lg:w-1/4 p-2">
+            <label className="block text-sm font-medium mb-1">
+              Transfer Number
+            </label>
+            <Input
+              placeholder="Transfer Call to"
+              value={transferNumber}
+              onChange={(e) => setTransferNumber(e.target.value)}
+            />
+          </div>
+
+          <div className="w-full md:w-1/2 lg:w-1/4 p-2">
+            <label className="block text-sm font-medium mb-1">Language</label>
+            <Select value={language} onValueChange={setLanguage}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select Language" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="en-us">English</SelectItem>
+                <SelectItem value="zh">Chinese</SelectItem>
+                <SelectItem value="es">Spanish</SelectItem>
+                <SelectItem value="fr">French</SelectItem>
+                <SelectItem value="de">German</SelectItem>
+                <SelectItem value="el">Greek</SelectItem>
+                <SelectItem value="hi">Hindi</SelectItem>
+                <SelectItem value="ja">Japanese</SelectItem>
+                <SelectItem value="ko">Korean</SelectItem>
+                <SelectItem value="pt">Portuguese</SelectItem>
+                <SelectItem value="it">Italian</SelectItem>
+                <SelectItem value="nl">Dutch</SelectItem>
+                <SelectItem value="pl">Polish</SelectItem>
+                <SelectItem value="ru">Russian</SelectItem>
+                <SelectItem value="sv">Swedish</SelectItem>
+                <SelectItem value="da">Danish</SelectItem>
+                <SelectItem value="fi">Finnish</SelectItem>
+                <SelectItem value="id">Indonesian</SelectItem>
+                <SelectItem value="ms">Malay</SelectItem>
+                <SelectItem value="tr">Turkish</SelectItem>
+                <SelectItem value="uk">Ukrainian</SelectItem>
+                <SelectItem value="bg">Bulgarian</SelectItem>
+                <SelectItem value="cs">Czech</SelectItem>
+                <SelectItem value="ro">Romanian</SelectItem>
+                <SelectItem value="sk">Slovak</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="w-full md:w-1/2 lg:w-1/4 p-2">
+            <label className="block text-sm font-medium mb-1">Model</label>
+            <Select value={model} onValueChange={setModel}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select Model" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="enhanced">Enhanced</SelectItem>
+                <SelectItem value="gpt4">GPT 4</SelectItem>
+                <SelectItem value="base">Base</SelectItem>
+                <SelectItem value="turbo">Turbo</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="w-full p-2">
+            <label className="block text-sm font-medium mb-1">
+              Company Information
+            </label>
+            <Select value={information} onValueChange={setInformation}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select Information" />
+              </SelectTrigger>
+              <SelectContent>
+                {vector.map((element, index) => (
+                  <SelectItem key={index} value={element?.vector_id}>
+                    {element?.name} - {element?.description}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="w-full p-2">
+            <label className="block text-sm font-medium mb-1">Tools</label>
+            <Select value={selectedTool} onValueChange={setSelectedTool}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select Tool" />
+              </SelectTrigger>
+              <SelectContent>
+                {tools.map((element, index) => (
+                  <SelectItem key={index} value={element?.tool_id}>
+                    {element?.tool?.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <FormButton state={loading} />
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Page;

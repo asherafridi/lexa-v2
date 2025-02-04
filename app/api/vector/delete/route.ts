@@ -6,12 +6,15 @@ import axios from 'axios';
 
 export async function POST(req: NextRequest) {
     const { id } = await req.json();
+
     const session = await getServerSession(authOption);
+    
 
     if (!session?.user?.id) {
         return NextResponse.json({ error: 'User not authenticated' }, { status: 401 });
     }
 
+    
     try {
 
 
@@ -22,12 +25,12 @@ export async function POST(req: NextRequest) {
             }
         };
 
-        const response = await axios.post(`https://api.bland.ai/v1/knowledgebases/${id}/delete`, {}, options);
+        const response = await axios.delete(`https://api.bland.ai/v1/knowledgebases/${id}`, options);
 
-        return NextResponse.json({ msg: response.data.message }, { status: 200 });
+        return NextResponse.json({ msg: 'Vector Store Removed Successfully' }, { status: 200 });
 
     } catch (error) {
-
+        console.log(error);
         if (axios.isAxiosError(error)) {
             return NextResponse.json({ error: error.response?.data.message || 'Error deleting vector' }, { status: error.response?.status || 500 });
         } else {

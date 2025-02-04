@@ -8,12 +8,13 @@ interface InboundAgent {
     description:string;
     text:string;
     first_sentence : string;
-    voice_id : string;
+    voice : string;
     prompt : string;
     max_duration : number;
     transfer_phone_number : string;
     language : string;
     model : string;
+    background_track : string;
   }
 
 const useInboundAgentsFetch = ()=>{

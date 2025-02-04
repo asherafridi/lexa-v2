@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
         
         // Make the POST request and wait for the response
         const response = await axios.post('https://api.bland.ai/v1/calls', options.data, { headers: options.headers });
-        // console.log(response);
+        console.log(response);
         return NextResponse.json({ msg: 'Calling...' }, { status: 200 });
 
     } catch (e) {

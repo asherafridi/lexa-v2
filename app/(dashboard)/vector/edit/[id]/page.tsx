@@ -5,37 +5,49 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useFetchVectorDetail } from '@/hooks/vectorHook';
 import pdfToText from 'react-pdftotext';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from '@/components/ui/skeleton';
 
-
-
-const Page = async ({params} : {params:{id:string}}) => {
-    const form = useForm();
+const Page = ({params} : {params:{id:string}}) => {
     const router = useRouter();
-    const {vector,vectorLoader} = useFetchVectorDetail(params.id);
-
+    const {vector, vectorLoader} = useFetchVectorDetail(params.id);
     const [loading, setLoading] = useState(false);
 
-    const submit = async (values: any) => {
+    // State for form fields
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [text, setText] = useState('');
+
+    useEffect(() => {
+        if (vector) {
+            setName(vector.name || '');
+            setDescription(vector.description || '');
+            setText(vector.text || '');
+        }
+    }, [vector]);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
         setLoading(true);
 
-        const data = { ...values,id:params.id };
+        const data = { 
+            name,
+            description,
+            text,
+            id: params.id
+        };
 
         axios.post('/api/vector/update', data)
             .then(response => {
                 toast.success(response.data?.msg);
+                console.log(response);
                 setTimeout(() => {
                     setLoading(false);
-                    form.reset();
                     router.push('/vector');
-                    
                 }, 1000);
             })
             .catch(e => {
@@ -45,92 +57,75 @@ const Page = async ({params} : {params:{id:string}}) => {
             });
     }
 
-    
-    function handleFrontFileChange(e:any) {
-        const file = e.target.files[0]; // Get the first file from the selected files
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
         if (file) {
-
             if (file.type === 'application/pdf') {
-                pdfToText(file)
-                    .then(text => form.setValue('text', text))
-                    .catch(error => console.error("Failed to extract text from pdf"))
-
+                try {
+                    const extractedText = await pdfToText(file);
+                    setText(extractedText);
+                } catch (error) {
+                    console.error("Failed to extract text from pdf");
+                    toast.error('Failed to extract text from PDF');
+                }
             } else {
-                toast.error('Unsupported file type. Please upload a text PDF');
+                toast.error('Unsupported file type. Please upload a PDF');
             }
         }
     }
-    
+
     if(vectorLoader){
         return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
     }
-    return (
 
+    return (
         <div className='p-5 min-h-screen'>
             <div className="bg-background border mt-4 rounded p-4">
                 <div className='flex justify-between items-center'>
                     <h3>Vector Store</h3>
                 </div>
 
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(submit)} className="mt-4 flex w-full flex-wrap">
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            defaultValue={vector?.name}
-                            render={({ field }) => (
-                                <FormItem className='w-full md:w-1/2 lg:w-full p-2'>
-                                    <FormLabel>Name</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Name" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
+                <form onSubmit={handleSubmit} className="mt-4 flex w-full flex-wrap">
+                    <div className='w-full md:w-1/2 lg:w-full p-2'>
+                        <Label>Name</Label>
+                        <Input 
+                            placeholder="Name" 
+                            value={name} 
+                            onChange={(e) => setName(e.target.value)}
                         />
+                    </div>
 
-                        <FormField
-                            control={form.control}
-                            name="description"
-                            defaultValue={vector?.description}
-                            render={({ field }) => (
-                                <FormItem className='w-full md:w-1/2 lg:w-full p-2'>
-                                    <FormLabel>Description</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Description" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
+                    <div className='w-full md:w-1/2 lg:w-full p-2'>
+                        <Label>Description</Label>
+                        <Input 
+                            placeholder="Description" 
+                            value={description} 
+                            onChange={(e) => setDescription(e.target.value)}
                         />
+                    </div>
 
-                        <FormItem className='w-full md:w-1/2 lg:w-full p-2'>
-                            <FormLabel>File (.pdf,.docs,.text)</FormLabel>
-                            <FormControl>
-                                <Input type="file"  />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-
-                        <FormField
-                            control={form.control}
-                            name="text"
-                            defaultValue={vector?.text}
-                            render={({ field }) => (
-                                <FormItem className='w-full md:w-1/2 lg:w-full p-2'>
-                                    <FormLabel>Text</FormLabel>
-                                    <FormControl>
-
-                                        <Textarea placeholder="Text" {...field} className='w-full' rows={10} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
+                    <div className='w-full md:w-1/2 lg:w-full p-2'>
+                        <Label>File (.pdf)</Label>
+                        <Input 
+                            type="file" 
+                            accept="application/pdf" 
+                            onChange={handleFileChange}
                         />
+                    </div>
 
-                        <FormButton state={loading} />
-                    </form>
-                </Form>
+                    <div className='w-full md:w-1/2 lg:w-full p-2'>
+                        <Label>Text</Label>
+                        <Textarea 
+                            placeholder="Text" 
+                            value={text} 
+                            onChange={(e) => setText(e.target.value)} 
+                            className='w-full' 
+                            rows={10} 
+                        />
+                    </div>
+
+                    <FormButton state={loading} />
+                </form>
             </div>
         </div>
     )

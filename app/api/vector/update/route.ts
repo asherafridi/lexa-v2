@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
             text: `${text}`
         };
     
-  axios.post(`https://api.bland.ai/v1/knowledgebases/${id}`, requestData, options)
+  axios.patch(`https://api.bland.ai/v1/knowledgebases/${id}`, requestData, options)
     .then(response => {
       console.log(response.data);
     })

@@ -91,6 +91,9 @@ const useVectorDelete = async (id: string): Promise<void> => {
   try {
     const response = await axios.post(`/api/vector/delete`, { id });
     toast.success(response?.data?.msg);
+    setTimeout(()=>{
+        window.location.reload();
+    },1000);
   } catch (error:any) {
     toast.error(error?.data?.error || 'An error occurred while deleting the Vector.');
   }
