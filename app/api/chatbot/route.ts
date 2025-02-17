@@ -45,24 +45,24 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // const response = await axios.post(
-    //   `https://lexachat.aireceptionistpro.com/api/chat/${user.knowledgeBaseId}`,
-    //   { 
-    //     message: message,
-    //     user_id: user.userId || undefined // Send undefined instead of null
-    //   },
-    //   {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "X-API-Key": user.apiKey,
-    //     },
-    //     timeout: AXIOS_TIMEOUT
-    //   }
-    // );
+    const response = await axios.post(
+      `https://lexachat.aireceptionistpro.com/api/chat/${user.knowledgeBaseId}`,
+      { 
+        message: message,
+        user_id: user.userId || undefined // Send undefined instead of null
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-Key": user.apiKey,
+        },
+        timeout: AXIOS_TIMEOUT
+      }
+    );
 
-    // response.data.response
+    
     return NextResponse.json(
-      { ans:  `User email is ${user.email}`},
+      { ans:  response.data.response},
       { status: 200, headers: setCorsHeaders() }
     );
 
