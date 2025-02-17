@@ -52,6 +52,7 @@ export async function POST(req: NextRequest) {
                 base_prompt: `${agent?.prompt}`,
                 call_data: contacts,
                 label: `${name}`,
+                first_sentence: `Hi {name}, ${agent?.firstSentence}`,
                 test_mode: true,
                 from : `${agent?.numberId}`,
                 record : true,
