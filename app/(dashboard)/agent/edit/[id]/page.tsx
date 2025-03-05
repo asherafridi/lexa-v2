@@ -81,6 +81,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     first_sentence: "",
     wait_for_greeting: "false",
     prompt: "",
+    backgroundTrack: "null",
     max_duration: "",
     transfer_number: "",
     language: "en-us",
@@ -98,6 +99,8 @@ const Page = ({ params }: { params: { id: string } }) => {
         first_sentence: data.firstSentence || "",
         wait_for_greeting: data.waitForGreeting ? "true" : "false",
         prompt: data.prompt || "",
+        
+        backgroundTrack: data.backgroundTrack || "en-us",
         max_duration: data.maxDuration?.toString() || "",
         transfer_number: data.transferNumber || "",
         language: data.language || "en-us",
@@ -150,8 +153,8 @@ const Page = ({ params }: { params: { id: string } }) => {
       <Breadcrumb />
       <div className="bg-white border mt-4 rounded p-4">
         <form onSubmit={handleSubmit} className="flex w-full flex-wrap">
-           {/* Name Field */}
-           <div className="w-full md:w-1/2 lg:w-1/3 p-2">
+          {/* Name Field */}
+          <div className="w-full md:w-1/2 lg:w-1/3 p-2">
             <label className="text-sm font-medium mb-2 block">Name</label>
             <Input
               name="name"
@@ -202,7 +205,7 @@ const Page = ({ params }: { params: { id: string } }) => {
           </div>
 
           {/* First Sentence */}
-          <div className="w-full md:w-1/2 lg:w-1/2 p-2">
+          <div className="w-full md:w-1/3 lg:w-1/3 p-2">
             <label className="text-sm font-medium mb-2 block">
               First Sentence
             </label>
@@ -215,7 +218,7 @@ const Page = ({ params }: { params: { id: string } }) => {
           </div>
 
           {/* Wait for Greeting */}
-          <div className="w-full md:w-1/2 lg:w-1/2 p-2">
+          <div className="w-full md:w-1/3 lg:w-1/3 p-2">
             <label className="text-sm font-medium mb-2 block">
               Wait For Greeting
             </label>
@@ -231,6 +234,38 @@ const Page = ({ params }: { params: { id: string } }) => {
               <SelectContent>
                 <SelectItem value="true">True</SelectItem>
                 <SelectItem value="false">False</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Background Track */}
+          <div className="w-full md:w-1/3 lg:w-1/3 p-2">
+            <Label>Background Track</Label>
+            <Select
+              value={formState.backgroundTrack}
+              onValueChange={(value) =>
+                handleSelectChange("backgroundTrack", value)
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select option" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="null">
+                  Default, will play audible but quiet phone static.
+                </SelectItem>
+                <SelectItem value="office">
+                  Office-style soundscape. Includes faint typing, chatter,
+                  clicks, and other office sounds.
+                </SelectItem>
+                <SelectItem value="cafe">
+                  Cafe-like soundscape. Includes faint talking, clinking, and
+                  other cafe sounds.
+                </SelectItem>
+                <SelectItem value="restaurant">
+                  Similar to cafe, but more subtle.
+                </SelectItem>
+                <SelectItem value="none">Minimizes background noise</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -253,105 +288,99 @@ const Page = ({ params }: { params: { id: string } }) => {
             </div>
           </div>
 
-                {/* Max Duration */}
-                <div className="w-full md:w-1/2 lg:w-1/4 p-2">
-                  <label className="text-sm font-medium mb-2 block">
-                    Max Duration
-                  </label>
-                  <Input
-                    name="max_duration"
-                    placeholder="Max Duration"
-                    value={formState.max_duration}
-                    onChange={handleInputChange}
-                  />
-                </div>
+          {/* Max Duration */}
+          <div className="w-full md:w-1/2 lg:w-1/4 p-2">
+            <label className="text-sm font-medium mb-2 block">
+              Max Duration
+            </label>
+            <Input
+              name="max_duration"
+              placeholder="Max Duration"
+              value={formState.max_duration}
+              onChange={handleInputChange}
+            />
+          </div>
 
-                {/* Transfer Number */}
-                <div className="w-full md:w-1/2 lg:w-1/4 p-2">
-                  <label className="text-sm font-medium mb-2 block">
-                    Transfer Number
-                  </label>
-                  <Input
-                    name="transfer_number"
-                    placeholder="Transfer Call to"
-                    value={formState.transfer_number}
-                    onChange={handleInputChange}
-                  />
-                </div>
+          {/* Transfer Number */}
+          <div className="w-full md:w-1/2 lg:w-1/4 p-2">
+            <label className="text-sm font-medium mb-2 block">
+              Transfer Number
+            </label>
+            <Input
+              name="transfer_number"
+              placeholder="Transfer Call to"
+              value={formState.transfer_number}
+              onChange={handleInputChange}
+            />
+          </div>
 
-                {/* Language Select */}
-                <div className="w-full md:w-1/2 lg:w-1/4 p-2">
-                  <label className="text-sm font-medium mb-2 block">
-                    Language
-                  </label>
-                  <Select
-                    value={formState.language}
-                    onValueChange={(value) =>
-                      handleSelectChange("language", value)
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select language" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="en-us">English</SelectItem>
-                      <SelectItem value="zh">Chinese</SelectItem>
-                      <SelectItem value="es">Spanish</SelectItem>
-                      <SelectItem value="fr">French</SelectItem>
-                      <SelectItem value="de">German</SelectItem>
-                      <SelectItem value="el">Greek</SelectItem>
-                      <SelectItem value="hi">Hindi</SelectItem>
-                      <SelectItem value="ja">Japanese</SelectItem>
-                      <SelectItem value="ko">Korean</SelectItem>
-                      <SelectItem value="pt">Portuguese</SelectItem>
-                      <SelectItem value="it">Italian</SelectItem>
-                      <SelectItem value="nl">Dutch</SelectItem>
-                      <SelectItem value="pl">Polish</SelectItem>
-                      <SelectItem value="ru">Russian</SelectItem>
-                      <SelectItem value="sv">Swedish</SelectItem>
-                      <SelectItem value="da">Danish</SelectItem>
-                      <SelectItem value="fi">Finnish</SelectItem>
-                      <SelectItem value="id">Indonesian</SelectItem>
-                      <SelectItem value="ms">Malay</SelectItem>
-                      <SelectItem value="tr">Turkish</SelectItem>
-                      <SelectItem value="uk">Ukrainian</SelectItem>
-                      <SelectItem value="bg">Bulgarian</SelectItem>
-                      <SelectItem value="cs">Czech</SelectItem>
-                      <SelectItem value="ro">Romanian</SelectItem>
-                      <SelectItem value="sk">Slovak</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+          {/* Language Select */}
+          <div className="w-full md:w-1/2 lg:w-1/4 p-2">
+            <label className="text-sm font-medium mb-2 block">Language</label>
+            <Select
+              value={formState.language}
+              onValueChange={(value) => handleSelectChange("language", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="en-us">English</SelectItem>
+                <SelectItem value="zh">Chinese</SelectItem>
+                <SelectItem value="es">Spanish</SelectItem>
+                <SelectItem value="fr">French</SelectItem>
+                <SelectItem value="de">German</SelectItem>
+                <SelectItem value="el">Greek</SelectItem>
+                <SelectItem value="hi">Hindi</SelectItem>
+                <SelectItem value="ja">Japanese</SelectItem>
+                <SelectItem value="ko">Korean</SelectItem>
+                <SelectItem value="pt">Portuguese</SelectItem>
+                <SelectItem value="it">Italian</SelectItem>
+                <SelectItem value="nl">Dutch</SelectItem>
+                <SelectItem value="pl">Polish</SelectItem>
+                <SelectItem value="ru">Russian</SelectItem>
+                <SelectItem value="sv">Swedish</SelectItem>
+                <SelectItem value="da">Danish</SelectItem>
+                <SelectItem value="fi">Finnish</SelectItem>
+                <SelectItem value="id">Indonesian</SelectItem>
+                <SelectItem value="ms">Malay</SelectItem>
+                <SelectItem value="tr">Turkish</SelectItem>
+                <SelectItem value="uk">Ukrainian</SelectItem>
+                <SelectItem value="bg">Bulgarian</SelectItem>
+                <SelectItem value="cs">Czech</SelectItem>
+                <SelectItem value="ro">Romanian</SelectItem>
+                <SelectItem value="sk">Slovak</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-                {/* Model Select */}
-                <div className="w-full md:w-1/2 lg:w-1/4 p-2">
-                  <label className="text-sm font-medium mb-2 block">
-                    Model
-                  </label>
-                  <Select
-                    value={formState.model}
-                    onValueChange={(value) =>
-                      handleSelectChange("model", value)
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select model" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="enhanced">Enhanced</SelectItem>
-                      <SelectItem value="gpt4">GPT 4</SelectItem>
-                      <SelectItem value="base">Base</SelectItem>
-                      <SelectItem value="turbo">Turbo</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+          {/* Model Select */}
+          <div className="w-full md:w-1/2 lg:w-1/4 p-2">
+            <label className="text-sm font-medium mb-2 block">Model</label>
+            <Select
+              value={formState.model}
+              onValueChange={(value) => handleSelectChange("model", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select model" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="enhanced">Enhanced</SelectItem>
+                <SelectItem value="gpt4">GPT 4</SelectItem>
+                <SelectItem value="base">Base</SelectItem>
+                <SelectItem value="turbo">Turbo</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           {/* Information Select */}
-          <div className='w-full md:w-full lg:w-1/2 p-2'>
+          <div className="w-full md:w-full lg:w-1/2 p-2">
             <Label>Company Information</Label>
             <Select
               value={formState.information}
-              onValueChange={(value) => handleSelectChange('information', value)}
+              onValueChange={(value) =>
+                handleSelectChange("information", value)
+              }
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select information" />
@@ -367,11 +396,11 @@ const Page = ({ params }: { params: { id: string } }) => {
           </div>
 
           {/* Tools Select */}
-          <div className='w-full md:w-full lg:w-1/2 p-2 pb-4'>
+          <div className="w-full md:w-full lg:w-1/2 p-2 pb-4">
             <Label>Tools</Label>
             <Select
               value={formState.tools}
-              onValueChange={(value) => handleSelectChange('tools', value)}
+              onValueChange={(value) => handleSelectChange("tools", value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select tool" />

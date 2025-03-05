@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOption } from '@/lib/auth';
 
 export async function POST(req: NextRequest) {
-    const { id, name, numberId,voice,prompt,first_sentence,language,max_duration,model,transfer_number,wait_for_greeting,tools,information } = await req.json();
+    const { id, name, numberId,voice,prompt,backgroundTrack,first_sentence,language,max_duration,model,transfer_number,wait_for_greeting,tools,information } = await req.json();
     const session = await getServerSession(authOption);
 
 
@@ -28,6 +28,7 @@ export async function POST(req: NextRequest) {
                 firstSentence : first_sentence,
                 language : language,
                 maxDuration : max_duration,
+                backgroundTrack: backgroundTrack,
                 model : model,
                 transferNumber : transfer_number,
                 waitForGreeting : `${wait_for_greeting}`,

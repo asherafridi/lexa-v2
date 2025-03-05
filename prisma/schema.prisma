@@ -57,6 +57,7 @@ model Agent {
   prompt          String
   numberId        String?
   firstSentence   String?
+  backgroundTrack String @default("null")
   waitForGreeting String? @default("false")
   maxDuration     String? @default("1")
   transferNumber  String?

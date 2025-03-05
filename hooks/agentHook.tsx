@@ -12,6 +12,7 @@ interface Agent {
   voice : string;
   numberId : string;
   prompt : string;
+  backgroundTrack:string;
   number : any;
   firstSentence : string;
   waitForGreeting : string;

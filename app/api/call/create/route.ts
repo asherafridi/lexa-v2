@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
                 phone_number: contact?.number,
                 task: agent?.prompt,
                 voice: agent?.voice,
+                background_track : agent?.backgroundTrack,
                 first_sentence: agent?.firstSentence,
                 wait_for_greeting: agent?.waitForGreeting,
                 record: true,

@@ -41,6 +41,7 @@ const Page = () => {
         first_sentence: '',
         wait_for_greeting: 'false',
         prompt: '',
+        backgroundTrack : 'null',
         max_duration: '1',
         transfer_number: '',
         language: 'en-us',
@@ -66,6 +67,7 @@ const Page = () => {
                     first_sentence: '',
                     wait_for_greeting: 'false',
                     prompt: '',
+                    backgroundTrack : 'null',
                     max_duration: '1',
                     transfer_number: '',
                     language: 'en-us',
@@ -154,7 +156,7 @@ const Page = () => {
                 </div>
 
                 {/* First Sentence */}
-                <div className='w-full md:w-1/2 lg:w-1/2 p-2'>
+                <div className='w-full md:w-1/3 lg:w-1/3 p-2'>
                     <Label>First Sentence</Label>
                     <Input
                         name="first_sentence"
@@ -165,7 +167,7 @@ const Page = () => {
                 </div>
 
                 {/* Wait for Greeting */}
-                <div className='w-full md:w-1/2 lg:w-1/2 p-2'>
+                <div className='w-full md:w-1/3 lg:w-1/3 p-2'>
                     <Label>Wait For Greeting</Label>
                     <Select
                         value={formState.wait_for_greeting}
@@ -177,6 +179,27 @@ const Page = () => {
                         <SelectContent>
                             <SelectItem value="true">True</SelectItem>
                             <SelectItem value="false">False</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+
+
+                {/* Background Track */}
+                <div className='w-full md:w-1/3 lg:w-1/3 p-2'>
+                    <Label>Background Track</Label>
+                    <Select
+                        value={formState.backgroundTrack}
+                        onValueChange={(value) => handleSelectChange('backgroundTrack', value)}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select option" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="null">Default, will play audible but quiet phone static.</SelectItem>
+                            <SelectItem value="office">Office-style soundscape. Includes faint typing, chatter, clicks, and other office sounds.</SelectItem>
+                            <SelectItem value="cafe">Cafe-like soundscape. Includes faint talking, clinking, and other cafe sounds.</SelectItem>
+                            <SelectItem value="restaurant">Similar to cafe, but more subtle.</SelectItem>
+                            <SelectItem value="none">Minimizes background noise</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
