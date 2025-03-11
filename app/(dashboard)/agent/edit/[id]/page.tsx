@@ -251,7 +251,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                 <SelectValue placeholder="Select option" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="none">
+                <SelectItem value="null">
                   Default, will play audible but quiet phone static.
                 </SelectItem>
                 <SelectItem value="office">

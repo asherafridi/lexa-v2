@@ -93,7 +93,7 @@ const Page = () => {
         setFormState(prev => ({ ...prev, [name]: value }));
     };
 
-    if (numberLoader || voiceLoader) {
+    if (numberLoader || voiceLoader || vectorLoader) {
         return <Skeleton className='w-full h-[400px] rounded mt-4' />;
     }
 
@@ -313,8 +313,8 @@ const Page = () => {
                         </SelectTrigger>
                         <SelectContent>
                             {vector?.map((element, index) => (
-                                <SelectItem key={index} value={element?.id}>
-                                    {element?.name}
+                                <SelectItem key={index} value={''+element?.id}>
+                                    {element?.name} 
                                 </SelectItem>
                             ))}
                         </SelectContent>
