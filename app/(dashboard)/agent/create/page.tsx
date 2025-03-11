@@ -67,7 +67,7 @@ const Page = () => {
                     first_sentence: '',
                     wait_for_greeting: 'false',
                     prompt: '',
-                    backgroundTrack : 'null',
+                    backgroundTrack : 'none',
                     max_duration: '1',
                     transfer_number: '',
                     language: 'en-us',
@@ -195,7 +195,7 @@ const Page = () => {
                             <SelectValue placeholder="Select option" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="null">Default, will play audible but quiet phone static.</SelectItem>
+                            <SelectItem value="none">Default, will play audible but quiet phone static.</SelectItem>
                             <SelectItem value="office">Office-style soundscape. Includes faint typing, chatter, clicks, and other office sounds.</SelectItem>
                             <SelectItem value="cafe">Cafe-like soundscape. Includes faint talking, clinking, and other cafe sounds.</SelectItem>
                             <SelectItem value="restaurant">Similar to cafe, but more subtle.</SelectItem>
@@ -313,8 +313,8 @@ const Page = () => {
                         </SelectTrigger>
                         <SelectContent>
                             {vector?.map((element, index) => (
-                                <SelectItem key={index} value={element?.vector_id}>
-                                    {element?.name} - {element?.description}
+                                <SelectItem key={index} value={element?.id}>
+                                    {element?.name}
                                 </SelectItem>
                             ))}
                         </SelectContent>

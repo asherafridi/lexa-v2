@@ -19,7 +19,7 @@ const Page = async ({params} : {params:{id:string}}) => {
 
         <div className='p-5 min-h-screen'>
             <div className="bg-background border mt-4 rounded p-4">
-                <h2><b>Vector Id :</b> {vector?.vector_id}</h2>
+                <h2><b>Vector Id :</b> {vector?.id}</h2>
                 <h2><b>Name :</b> {vector?.name}</h2>
                 <h2><b>Description :</b> {vector?.description}</h2>
                 <h2><b>Text :</b> {vector?.text}</h2>

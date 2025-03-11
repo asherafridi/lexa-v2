@@ -13,12 +13,27 @@ export async function POST(req: NextRequest) {
     }
     try{
 
-    
-        const options = {method: 'GET', headers: {authorization: session.user.key_token}};
-    
-    
-        const response = await axios.get(`https://api.bland.ai/v1/knowledgebases/${id}?include_text=true`,options);
-        return NextResponse.json({vector:response.data},{status:200});
+        const vectorId = await prisma.vectorStore.findFirstOrThrow({
+            where:{
+                id: +id
+            }
+        });
+
+        const response = await axios.get(
+            `https://lexachat.aireceptionistpro.com/api/knowledge/${vectorId.knowledge_base_id}`,
+            {
+              headers: {
+                "X-API-Key": vectorId.api_key, // Ensure headers are passed correctly
+              },
+            }
+          );
+        const vector = {
+            vector_id : vectorId.id,
+            name : vectorId.name,
+            description: vectorId.description,
+            text : response.data.knowledge_base_text
+        }
+        return NextResponse.json({vector:vector},{status:200});
     }catch(e){
         
         return NextResponse.json({error:'Data Not Found'},{status:500});

@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
         const contactId = parseInt(id, 10);
 
         if (isNaN(contactId)) {
-            return NextResponse.json({ error: 'Invalid Vector Id', }, { status: 500 });
+            return NextResponse.json({ error: 'Invalid Contact Id', }, { status: 500 });
         }
 
         const contact = await prisma.vectorStore.delete({

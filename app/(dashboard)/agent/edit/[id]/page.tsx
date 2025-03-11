@@ -53,7 +53,7 @@ interface PhoneNumber {
 }
 
 interface Vector {
-  vector_id: string;
+  id: string;
   name: string;
   description: string;
 }
@@ -251,7 +251,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                 <SelectValue placeholder="Select option" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="null">
+                <SelectItem value="none">
                   Default, will play audible but quiet phone static.
                 </SelectItem>
                 <SelectItem value="office">
@@ -386,9 +386,9 @@ const Page = ({ params }: { params: { id: string } }) => {
                 <SelectValue placeholder="Select information" />
               </SelectTrigger>
               <SelectContent>
-                {(vector || []).map((element: Vector) => (
-                  <SelectItem key={element.vector_id} value={element.vector_id}>
-                    {element.name} - {element.description}
+                {(vector || []).map((element:any) => (
+                  <SelectItem key={element.id} value={element.id}>
+                    {element.name}
                   </SelectItem>
                 ))}
               </SelectContent>

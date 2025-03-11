@@ -29,6 +29,7 @@ model User {
   contacts          Contact[] // Define one-to-many relationship
   agents            Agent[] // Define one-to-many relationship
   groups            ContactGroup[] // Define one-to-many relationship
+  vectorStore       VectorStore[] // Define one-to-many relationship
 }
 
 model ContactGroup {
@@ -57,7 +58,7 @@ model Agent {
   prompt          String
   numberId        String?
   firstSentence   String?
-  backgroundTrack String @default("null")
+  backgroundTrack String  @default("null")
   waitForGreeting String? @default("false")
   maxDuration     String? @default("1")
   transferNumber  String?
@@ -67,4 +68,15 @@ model Agent {
   userId          Int
   tools           String?
   vector          String?
+}
+
+model VectorStore {
+  id                Int     @id @default(autoincrement())
+  name              String?
+  description              String?
+  a_user_id         String?
+  api_key           String?
+  knowledge_base_id String?
+  user              User    @relation(fields: [userId], references: [id]) // Establish relation
+  userId            Int
 }

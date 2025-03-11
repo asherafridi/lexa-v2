@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 interface Vector {
-  vector_id : string;
+  id : string;
   name:string;
   description:string;
   text:string;
@@ -23,7 +23,7 @@ const useVectorFetch = ()=>{
       try {
         const response = await axios.get('/api/vector');
         console.log(response.data);
-        setVectors(response.data.vectors.data.vectors);
+        setVectors(response.data.vectors);
         setVectorLoader(false);
         
       } catch (error) {
@@ -71,7 +71,7 @@ const useFetchVectorDetail = (id:string)=>{
       try {
         const response = await axios.post(`/api/vector/read`,{id :id});
         console.log(response.data.vector);
-        setVectors(response.data.vector.data);
+        setVectors(response.data.vector);
         setVectorLoader(false);
         
       } catch (error) {

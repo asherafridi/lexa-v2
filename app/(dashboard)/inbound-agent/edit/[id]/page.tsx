@@ -221,7 +221,7 @@ const Page = ({ params }: { params: { id: string } }) => {
               </SelectTrigger>
               <SelectContent>
                 {vector.map((element, index) => (
-                  <SelectItem key={index} value={element?.vector_id}>
+                  <SelectItem key={index} value={element?.id}>
                     {element?.name} - {element?.description}
                   </SelectItem>
                 ))}

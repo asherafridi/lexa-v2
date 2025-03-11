@@ -13,12 +13,10 @@ export async function GET(req : NextRequest,res : NextResponse) {
     }
     try{
 
-    
-        const options = {method: 'GET', headers: {authorization: session.user.key_token}};
-    
-    
-        const response = await axios.get('https://api.bland.ai/v1/knowledgebases',options);
-        return NextResponse.json({vectors:response.data},{status:200});
+        const vector = await prisma.vectorStore.findMany({
+        })
+        console.log(vector);
+        return NextResponse.json({vectors:vector},{status:200});
     }catch(e){
         
         return NextResponse.json({error:'Data Not Found'},{status:500});
